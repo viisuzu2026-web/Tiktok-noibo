@@ -118,6 +118,32 @@
       </div>
     </section>
 
+    <!-- NHẬN XÉT NHANH: TỰ ĐỘNG TỔNG HỢP TRƯỚC PHẦN PHÂN TÍCH CHI TIẾT -->
+    <section id="quickReviewSection" class="relative overflow-hidden bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <div class="absolute inset-y-0 left-0 w-1.5 bg-[#8c0000]"></div>
+      <div class="p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-red-50 text-[#8c0000]">
+                <i data-lucide="message-square-text" class="w-4.5 h-4.5"></i>
+              </span>
+              Nhận Xét Nhanh <span id="quickReviewYear" class="text-[#8c0000]"></span>
+            </h2>
+            <p class="text-xs text-slate-500 mt-1 ml-10">Tự động tổng hợp từ số liệu của năm đang chọn</p>
+          </div>
+          <span id="quickReviewBadge" class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 w-fit">
+            <i data-lucide="loader-circle" class="w-3.5 h-3.5"></i>
+            Đang tổng hợp
+          </span>
+        </div>
+
+        <div id="quickReviewContent" class="mt-5">
+          <div class="py-7 text-center text-sm text-slate-400">Đang tạo nhận xét từ dữ liệu...</div>
+        </div>
+      </div>
+    </section>
+
     <!-- PHẦN 2: SO SÁNH NĂM (YoY) & BIỂU ĐỒ CỘT (BAR CHART) SO SÁNH 2 NĂM -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2 mb-5">
@@ -344,6 +370,9 @@
       // 1. Thẻ KPI
       renderKPICards(curr, prev, year, prevYear);
 
+      // Nhận xét nhanh trước khi đi vào phân tích chi tiết
+      renderQuickReview(curr, prev, year, prevYear);
+
       // 2. Bảng so sánh YoY & BIỂU ĐỒ CỘT SO SÁNH 2 NĂM
       renderYoYComparison(curr, prev, year, prevYear);
       renderYoYBarChart(curr, prev, year, prevYear);
@@ -357,6 +386,218 @@
       renderLongVideos(curr);
 
       lucide.createIcons();
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderQuickReview(curr, prev, year, prevYear) {
+      const content = document.getElementById("quickReviewContent");
+      const badge = document.getElementById("quickReviewBadge");
+      document.getElementById("quickReviewYear").innerText = `Năm ${year}`;
+
+      if (!curr || !curr.hasData) {
+        badge.className = "inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 w-fit";
+        badge.innerHTML = `<i data-lucide="circle-alert" class="w-3.5 h-3.5"></i> Chưa có dữ liệu`;
+        content.innerHTML = `
+          <div class="rounded-xl bg-slate-50 border border-dashed border-slate-300 px-5 py-8 text-center">
+            <p class="text-sm font-bold text-slate-600">Chưa thể tạo nhận xét cho năm ${year}</p>
+            <p class="text-xs text-slate-400 mt-1">Hệ thống chưa ghi nhận video hợp lệ trong các sheet của năm này.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const monthly = Array.isArray(curr.monthly) ? curr.monthly : [];
+      const now = new Date();
+      const currentCalendarYear = now.getFullYear();
+      const reportEndMonth = year === currentCalendarYear ? now.getMonth() + 1 : 12;
+      const elapsedMonthly = monthly.slice(0, reportEndMonth);
+      const monthName = number => `Tháng ${number}`;
+
+      const totalVideos = Number(curr.summary?.videos) || 0;
+      const totalMembers = Number(curr.summary?.members) || 0;
+      const totalBudget = Number(curr.summary?.budget) || 0;
+      const totalViews = Number(curr.summary?.views) || 0;
+      const activeMonths = elapsedMonthly.filter(item => (Number(item.videos) || 0) > 0).length;
+      const inactiveMonths = elapsedMonthly
+        .filter(item => (Number(item.videos) || 0) === 0)
+        .map(item => monthName(item.month));
+      const averageVideos = reportEndMonth > 0 ? totalVideos / reportEndMonth : 0;
+      const averageReward = totalVideos > 0 ? totalBudget / totalVideos : 0;
+      const monthlyParticipation = elapsedMonthly.reduce((sum, item) => sum + (Number(item.members) || 0), 0);
+
+      const peakVideoCount = elapsedMonthly.length
+        ? Math.max(...elapsedMonthly.map(item => Number(item.videos) || 0))
+        : 0;
+      const peakVideoMonths = elapsedMonthly
+        .filter(item => (Number(item.videos) || 0) === peakVideoCount && peakVideoCount > 0)
+        .map(item => monthName(item.month));
+
+      const peakMemberCount = elapsedMonthly.length
+        ? Math.max(...elapsedMonthly.map(item => Number(item.members) || 0))
+        : 0;
+      const peakMemberMonths = elapsedMonthly
+        .filter(item => (Number(item.members) || 0) === peakMemberCount && peakMemberCount > 0)
+        .map(item => monthName(item.month));
+
+      const firstPeriod = elapsedMonthly.slice(0, Math.min(6, elapsedMonthly.length));
+      const secondPeriod = elapsedMonthly.slice(6);
+      const firstTotal = firstPeriod.reduce((sum, item) => sum + (Number(item.videos) || 0), 0);
+      const secondTotal = secondPeriod.reduce((sum, item) => sum + (Number(item.videos) || 0), 0);
+      const firstAverage = firstPeriod.length ? firstTotal / firstPeriod.length : 0;
+      const secondAverage = secondPeriod.length ? secondTotal / secondPeriod.length : 0;
+
+      let trendText = "Chưa đủ dữ liệu để đánh giá xu hướng giữa hai nửa năm.";
+      let trendDirection = "neutral";
+      let trendPercent = null;
+
+      if (secondPeriod.length > 0 && firstAverage > 0) {
+        trendPercent = ((secondAverage - firstAverage) / firstAverage) * 100;
+        if (Math.abs(trendPercent) < 0.05) {
+          trendText = "Nhịp đăng video bình quân trong hai giai đoạn đang tương đương nhau.";
+        } else if (trendPercent > 0) {
+          trendDirection = "up";
+          trendText = `Nhịp đăng bình quân từ tháng 7 trở đi tăng ${Math.abs(trendPercent).toFixed(1)}% so với 6 tháng đầu năm.`;
+        } else {
+          trendDirection = "down";
+          trendText = `Nhịp đăng bình quân từ tháng 7 trở đi giảm ${Math.abs(trendPercent).toFixed(1)}% so với 6 tháng đầu năm.`;
+        }
+      } else if (secondPeriod.length > 0 && firstAverage === 0 && secondAverage > 0) {
+        trendDirection = "up";
+        trendText = "Hoạt động bắt đầu phát sinh từ nửa sau của năm và đang có chuyển biến tích cực.";
+      }
+
+      const topPerson = Array.isArray(curr.topPersonnel) && curr.topPersonnel.length
+        ? curr.topPersonnel[0]
+        : null;
+      const topVideo = Array.isArray(curr.topVideos) && curr.topVideos.length
+        ? curr.topVideos[0]
+        : null;
+      const investedCount = Array.isArray(curr.investedVideos) ? curr.investedVideos.length : 0;
+
+      let yoyText = `Chưa đủ dữ liệu năm ${prevYear} để đối chiếu cùng kỳ.`;
+      if (prev && prev.hasData && Number(prev.summary?.videos) > 0) {
+        const yoyVideo = ((totalVideos - Number(prev.summary.videos)) / Number(prev.summary.videos)) * 100;
+        yoyText = `Tổng sản lượng video ${yoyVideo >= 0 ? "tăng" : "giảm"} ${Math.abs(yoyVideo).toFixed(1)}% so với năm ${prevYear}.`;
+      }
+
+      let recommendation = "Tiếp tục duy trì nhịp sản xuất hiện tại và theo dõi đều số liệu từng tháng.";
+      if (inactiveMonths.length > 0) {
+        recommendation = `Ưu tiên khắc phục các tháng chưa phát sinh video (${inactiveMonths.join(", ")}); đặt mức tối thiểu 1 video/tháng và nhân rộng cách triển khai của ${peakVideoMonths.join(" và ") || "tháng cao điểm"}.`;
+      } else if (trendDirection === "down") {
+        recommendation = "Cần rà soát nguyên nhân giảm nhịp đăng trong giai đoạn gần đây và phân bổ lại chỉ tiêu video cho từng nhân sự.";
+      } else if (totalMembers > 0 && totalVideos / totalMembers < 2) {
+        recommendation = "Nên tăng tần suất tham gia bình quân trên mỗi nhân sự và giao chỉ tiêu nội dung rõ ràng theo tháng.";
+      } else {
+        recommendation = `Duy trì tính liên tục và nhân rộng cách triển khai của ${peakVideoMonths.join(" và ") || "tháng cao điểm"}.`;
+      }
+
+      const badgeStyles = {
+        up: {
+          className: "inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 w-fit",
+          icon: "trending-up",
+          label: "Xu hướng tích cực"
+        },
+        down: {
+          className: "inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 w-fit",
+          icon: "trending-down",
+          label: "Cần cải thiện"
+        },
+        neutral: {
+          className: "inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 w-fit",
+          icon: "activity",
+          label: "Đang theo dõi"
+        }
+      };
+      const badgeConfig = badgeStyles[trendDirection];
+      badge.className = badgeConfig.className;
+      badge.innerHTML = `<i data-lucide="${badgeConfig.icon}" class="w-3.5 h-3.5"></i> ${badgeConfig.label}`;
+
+      const periodLabel = year === currentCalendarYear ? `${reportEndMonth} tháng đầu năm` : "12 tháng";
+      const peakVideoText = peakVideoMonths.length
+        ? `${peakVideoMonths.join(" và ")} cao nhất với ${formatNumber(peakVideoCount)} video.`
+        : "Chưa xác định được tháng cao điểm.";
+      const peakMemberText = peakMemberMonths.length
+        ? `Cao điểm huy động là ${peakMemberMonths.join(" và ")} với ${formatNumber(peakMemberCount)} người.`
+        : "Chưa xác định được tháng có mức tham gia cao nhất.";
+      const topPersonText = topPerson
+        ? ` Nhân sự nổi bật nhất là <strong class="text-slate-900">${escapeHtml(topPerson.name)}</strong> với <strong class="text-[#8c0000]">${formatNumber(topPerson.count)} video</strong>.`
+        : "";
+      const topVideoText = topVideo
+        ? ` Video dẫn đầu là <strong class="text-slate-900">“${escapeHtml(topVideo.title || "Chưa có tên nội dung")}”</strong> của ${escapeHtml(topVideo.author || "")}, đạt <strong class="text-[#8c0000]">${formatNumber(topVideo.score)} điểm</strong>.`
+        : "";
+
+      content.innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="flex items-start gap-3">
+                <span class="mt-0.5 p-2 rounded-lg bg-blue-100 text-blue-700 shrink-0"><i data-lucide="video" class="w-4 h-4"></i></span>
+                <div>
+                  <h3 class="text-xs font-black uppercase tracking-wider text-slate-700">Nhịp hoạt động</h3>
+                  <p class="text-sm text-slate-600 leading-6 mt-1">
+                    Trong ${periodLabel}, chương trình có <strong class="text-slate-900">${formatNumber(totalVideos)} video</strong>, bình quân <strong class="text-slate-900">${averageVideos.toFixed(1)} video/tháng</strong> và hoạt động ${activeMonths}/${reportEndMonth} tháng. ${peakVideoText}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="flex items-start gap-3">
+                <span class="mt-0.5 p-2 rounded-lg bg-emerald-100 text-emerald-700 shrink-0"><i data-lucide="users" class="w-4 h-4"></i></span>
+                <div>
+                  <h3 class="text-xs font-black uppercase tracking-wider text-slate-700">Mức độ tham gia</h3>
+                  <p class="text-sm text-slate-600 leading-6 mt-1">
+                    Có <strong class="text-slate-900">${formatNumber(totalMembers)} nhân sự</strong>, tương ứng ${formatNumber(monthlyParticipation)} lượt tham gia theo tháng. ${peakMemberText}${topPersonText}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="flex items-start gap-3">
+                <span class="mt-0.5 p-2 rounded-lg bg-amber-100 text-amber-700 shrink-0"><i data-lucide="wallet" class="w-4 h-4"></i></span>
+                <div>
+                  <h3 class="text-xs font-black uppercase tracking-wider text-slate-700">Hiệu quả nguồn lực</h3>
+                  <p class="text-sm text-slate-600 leading-6 mt-1">
+                    Tổng thưởng <strong class="text-slate-900">${formatMoney(totalBudget)}</strong>, bình quân <strong class="text-slate-900">${formatMoney(averageReward)}/video</strong>. Ghi nhận ${formatNumber(totalViews)} lượt xem và ${formatNumber(investedCount)} video dài từ 90 giây.${topVideoText}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="flex items-start gap-3">
+                <span class="mt-0.5 p-2 rounded-lg bg-red-100 text-[#8c0000] shrink-0"><i data-lucide="chart-no-axes-combined" class="w-4 h-4"></i></span>
+                <div>
+                  <h3 class="text-xs font-black uppercase tracking-wider text-slate-700">Xu hướng</h3>
+                  <p class="text-sm text-slate-600 leading-6 mt-1">${trendText} ${yoyText}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="lg:col-span-4 rounded-xl bg-gradient-to-br from-[#8c0000] to-[#550000] text-white p-5 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex items-center gap-2 text-yellow-300">
+                <i data-lucide="lightbulb" class="w-5 h-5"></i>
+                <h3 class="text-xs font-black uppercase tracking-wider">Đề xuất hành động</h3>
+              </div>
+              <p class="text-sm text-white/90 leading-6 mt-3">${escapeHtml(recommendation)}</p>
+            </div>
+            <div class="mt-5 pt-4 border-t border-white/20 text-[11px] text-white/60">
+              Nhận xét được cập nhật tự động theo năm báo cáo.
+            </div>
+          </aside>
+        </div>
+      `;
     }
 
     function renderKPICards(curr, prev, currYear, prevYear) {
