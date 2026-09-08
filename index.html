@@ -64,7 +64,7 @@
       <div class="flex items-center gap-3.5 flex-wrap sm:flex-nowrap">
         <div class="flex items-center gap-2.5 bg-white px-3 py-1.5 rounded-xl shadow-sm shrink-0 border border-slate-200">
           <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Isuzu_logo.svg/2560px-Isuzu_logo.svg.png" 
+            src="https://isuzu-vietnam.com/wp-content/uploads/2020/01/Isuzu-logo-1991-3840x2160.png" 
             alt="Logo ISUZU" 
             class="h-6 sm:h-7 w-auto object-contain" 
           />
@@ -118,15 +118,15 @@
       </div>
     </section>
 
-    <!-- PHẦN 2: SO SÁNH NĂM (YoY) & BIỂU ĐỒ ĐƯỜNG -->
+    <!-- PHẦN 2: SO SÁNH YoY & BIỂU ĐỒ ĐƯỜNG 12 THÁNG CỦA NĂM ĐƯỢC CHỌN -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2 mb-5">
         <div>
           <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
             <i data-lucide="trending-up" class="w-5 h-5 text-[#8c0000]"></i>
-            1. Phân Tích & Đối Chiếu Số Liệu Tăng Trưởng (YoY)
+            1. TÌNH TRẠNG QUA 12 THÁNG TRONG NĂM <span id="chartYearTitle" class="text-[#8c0000]"></span>
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5">So sánh năm hiện tại với năm trước liền kề</p>
+          <p class="text-xs text-slate-500 mt-0.5">Đối chiếu tăng trưởng năm trước (bên trái) và biểu đồ đường biến động 12 tháng (bên phải)</p>
         </div>
         <div id="compareBadge" class="text-xs font-semibold px-3 py-1 bg-red-50 text-[#8c0000] border border-red-100 rounded-full w-fit">
           <!-- Badge -->
@@ -134,8 +134,8 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        <!-- Bảng chỉ số -->
-        <div class="lg:col-span-7 overflow-x-auto">
+        <!-- Bảng đối chiếu năm trước -->
+        <div class="lg:col-span-6 overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm">
             <thead>
               <tr class="bg-slate-50 text-slate-700 font-bold border-y border-slate-200 text-xs uppercase tracking-wider">
@@ -151,28 +151,30 @@
           </table>
         </div>
 
-        <!-- Biểu đồ đường -->
-        <div class="lg:col-span-5 bg-slate-50/80 p-4 rounded-xl border border-slate-200">
+        <!-- BIỂU ĐỒ ĐƯỜNG: TRỤC HOÀNH LÀ 12 THÁNG, TRỤC TUNG LÀ ĐƠN VỊ -->
+        <div class="lg:col-span-6 bg-slate-50/90 p-4 rounded-xl border border-slate-200">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Xu hướng qua các năm</h3>
-            <span class="text-[11px] text-slate-400">Đơn vị: Số lượng</span>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">
+              Biến động: Số Video & Nhân sự theo 12 Tháng
+            </h3>
+            <span class="text-[11px] font-semibold text-slate-400">Trục tung: Đơn vị</span>
           </div>
-          <div class="relative h-56">
-            <canvas id="yoyChart"></canvas>
+          <div class="relative h-60">
+            <canvas id="monthlyLineChart"></canvas>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PHẦN MỚI: TÌNH TRẠNG THAM GIA QUA TỪNG THÁNG TRONG NĂM (DÒNG NGANG) -->
+    <!-- PHẦN 3: BẢNG SỐ LIỆU CHI TIẾT 12 THÁNG DÒNG NGANG -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2 mb-4">
         <div>
           <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-            <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-600"></i>
-            2. Tình Trạng Tham Gia Qua Từng Tháng Trong Năm <span id="monthlyYearTitle" class="text-[#8c0000]"></span>
+            <i data-lucide="table" class="w-5 h-5 text-blue-600"></i>
+            2. TÌNH TRẠNG THAM GIA QUA TỪNG THÁNG <span id="monthlyYearTitle" class="text-[#8c0000]"></span>
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5">Chi tiết số lượng video, nhân sự và tiền thưởng của 12 tháng</p>
+          <p class="text-xs text-slate-500 mt-0.5">Bảng số liệu chi tiết tương ứng với biểu đồ đường bên trên</p>
         </div>
       </div>
 
@@ -197,15 +199,12 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 font-medium">
-            <!-- Dòng 1: Số video -->
             <tr id="rowMonthlyVideos" class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Số video</td>
             </tr>
-            <!-- Dòng 2: Nhân sự tham gia -->
             <tr id="rowMonthlyMembers" class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Nhân sự tham gia</td>
             </tr>
-            <!-- Dòng 3: Tiền thưởng -->
             <tr id="rowMonthlyBudget" class="hover:bg-slate-50 transition">
               <td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Tiền thưởng</td>
             </tr>
@@ -214,7 +213,7 @@
       </div>
     </section>
 
-    <!-- PHẦN 3 & 4: TOP VIDEO NỔI BẬT & TOP NHÂN SỰ -->
+    <!-- PHẦN 4 & 5: TOP VIDEO NỔI BẬT & TOP NHÂN SỰ -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
       <!-- TOP 3 VIDEO -->
@@ -224,7 +223,7 @@
             <div>
               <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
                 <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
-                3. Top 3 Video Nổi Bật Nhất (Theo Tổng Điểm)
+                3. TOP 3 VIDEO NỔI BẬT NHẤT NĂM
               </h2>
               <p class="text-xs text-slate-500 mt-0.5">Xếp hạng tính trên tổng hòa Lượt xem, Tim, Bình luận và Lượt lưu</p>
             </div>
@@ -256,7 +255,7 @@
           <div>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
               <i data-lucide="flame" class="w-5 h-5 text-[#8c0000]"></i>
-              4. Top Nhân Sự Hăng Hái
+              4. TOP 3 NHÂN SỰ HĂNG HÁI NHẤT NĂM
             </h2>
             <p class="text-xs text-slate-500 mt-0.5">Thành viên có sản lượng clip nhiều nhất</p>
           </div>
@@ -269,13 +268,13 @@
 
     </div>
 
-    <!-- PHẦN 5: VIDEO ĐẦU TƯ CHỈN CHU (>= 90s) -->
+    <!-- PHẦN 6: VIDEO ĐẦU TƯ CHỈN CHU (>= 90s) -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
       <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
         <div>
           <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
             <i data-lucide="clapperboard" class="w-5 h-5 text-blue-700"></i>
-            5. Danh Sách Video Đầu Tư Chỉn Chu (Thời lượng ≥ 90 giây)
+            5. Danh Sách Video đầu tư chỉn chu (Thời lượng ≥ 90 giây)
           </h2>
           <p class="text-xs text-slate-500 mt-0.5">Các clip chuyên đề sâu: Giới thiệu xe chi tiết, trải nghiệm lái, bàn giao xe</p>
         </div>
@@ -309,7 +308,7 @@
 
   <!-- SCRIPT KẾT NỐI API APPS SCRIPT TRỰC TIẾP -->
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbziz0u4JtSX-95uebxyesP_uOIqiJjJt-hBOMLZh4gaXtnPauLSVIcUq5wuRbzWAo8W/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbxWpT2PE3CvyDVNX_IlPTuE9fkoapbvAbvZ6sX3w1vvp9xQlmkfMGH1dlmtaBVZ6FkZ/exec";
 
     let DATABASE = {};
     let currentSelectedYear = 2026;
@@ -365,9 +364,19 @@
       const prevYear = year - 1;
       const prev = DATABASE[prevYear] || null;
 
+      // 1. Thẻ KPI
       renderKPICards(curr, prev, year, prevYear);
+
+      // 2. Bảng so sánh YoY
       renderYoYComparison(curr, prev, year, prevYear);
+
+      // 3. BIỂU ĐỒ ĐƯỜNG: TRỤC HOÀNH LÀ 12 THÁNG CỦA NĂM ĐƯỢC CHỌN
+      renderMonthlyLineChart(curr, year);
+
+      // 4. Bảng số liệu 12 tháng dòng ngang
       renderMonthlyTable(curr, year);
+
+      // 5. Top 3 Video, Top Nhân sự, Video >= 90s
       renderTopVideos(curr);
       renderTopPersonnel(curr);
       renderLongVideos(curr);
@@ -490,61 +499,40 @@
           </tr>
         `;
       }).join('');
-
-      renderLineChart();
     }
 
-    // RENDER BẢNG 12 THÁNG CHẠY NGANG
-    function renderMonthlyTable(curr, year) {
-      document.getElementById("monthlyYearTitle").innerText = `(${year})`;
-      const monthly = curr?.monthly || Array.from({ length: 12 }, () => ({ videos: 0, members: 0, budget: 0 }));
-
-      const rowVid = document.getElementById("rowMonthlyVideos");
-      const rowMem = document.getElementById("rowMonthlyMembers");
-      const rowBud = document.getElementById("rowMonthlyBudget");
-
-      let totalVids = 0;
-      let totalBud = 0;
-
-      let htmlVid = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Số video</td>`;
-      let htmlMem = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Nhân sự tham gia</td>`;
-      let htmlBud = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Tiền thưởng</td>`;
-
-      monthly.forEach(m => {
-        totalVids += m.videos;
-        totalBud += m.budget;
-
-        htmlVid += `<td class="py-2.5 px-2 border-r border-slate-200 font-semibold ${m.videos > 0 ? 'text-blue-700 bg-blue-50/30' : 'text-slate-400'}">${m.videos}</td>`;
-        htmlMem += `<td class="py-2.5 px-2 border-r border-slate-200 font-semibold ${m.members > 0 ? 'text-emerald-700' : 'text-slate-400'}">${m.members}</td>`;
-        htmlBud += `<td class="py-2.5 px-2 border-r border-slate-200 text-xs font-semibold ${m.budget > 0 ? 'text-slate-800' : 'text-slate-400'}">${m.budget > 0 ? (m.budget / 1000).toLocaleString('vi-VN') + 'k' : '0'}</td>`;
-      });
-
-      // Thêm cột CẢ NĂM
-      htmlVid += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black">${totalVids}</td>`;
-      htmlMem += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black">${curr?.summary?.members || 0}</td>`;
-      htmlBud += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black text-xs">${formatMoney(totalBud)}</td>`;
-
-      rowVid.innerHTML = htmlVid;
-      rowMem.innerHTML = htmlMem;
-      rowBud.innerHTML = htmlBud;
-    }
-
-    function renderLineChart() {
-      const ctx = document.getElementById('yoyChart').getContext('2d');
+    // ==========================================================
+    // VẼ BIỂU ĐỒ ĐƯỜNG: TRỤC HOÀNH LÀ 12 THÁNG CỦA NĂM ĐƯỢC CHỌN
+    // ==========================================================
+    function renderMonthlyLineChart(curr, year) {
+      document.getElementById("chartYearTitle").innerText = `(${year})`;
+      const ctx = document.getElementById('monthlyLineChart').getContext('2d');
       if (chartInstance) chartInstance.destroy();
 
-      const sortedYears = Object.keys(DATABASE).map(y => parseInt(y, 10)).sort((a, b) => a - b);
-      const videoSeries = sortedYears.map(y => (DATABASE[y] && DATABASE[y].hasData) ? DATABASE[y].summary.videos : 0);
-      const memberSeries = sortedYears.map(y => (DATABASE[y] && DATABASE[y].hasData) ? DATABASE[y].summary.members : 0);
+      // Nhãn trục hoành: 12 Tháng cố định
+      const monthLabels = [
+        "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", 
+        "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", 
+        "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+      ];
+
+      // Lấy dữ liệu 12 tháng từ API
+      let videoData = Array(12).fill(0);
+      let memberData = Array(12).fill(0);
+
+      if (curr && Array.isArray(curr.monthly) && curr.monthly.length === 12) {
+        videoData = curr.monthly.map(m => m.videos || 0);
+        memberData = curr.monthly.map(m => m.members || 0);
+      }
 
       chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: sortedYears.map(y => `Năm ${y}`),
+          labels: monthLabels,
           datasets: [
             {
-              label: 'Tổng Video',
-              data: videoSeries,
+              label: 'Số Video',
+              data: videoData,
               borderColor: '#8c0000',
               backgroundColor: 'rgba(140, 0, 0, 0.08)',
               borderWidth: 2.5,
@@ -558,7 +546,7 @@
             },
             {
               label: 'Nhân sự tham gia',
-              data: memberSeries,
+              data: memberData,
               borderColor: '#0A2540',
               backgroundColor: 'transparent',
               borderWidth: 2,
@@ -582,13 +570,25 @@
                 boxWidth: 12, 
                 font: { family: 'Roboto', size: 11, weight: '500' } 
               } 
+            },
+            tooltip: {
+              titleFont: { family: 'Roboto', weight: 'bold' },
+              bodyFont: { family: 'Roboto' }
             }
           },
           scales: {
             y: { 
-              beginAtZero: true, 
+              beginAtZero: true,
+              ticks: { 
+                precision: 0,
+                font: { family: 'Roboto', size: 11 } 
+              },
               grid: { color: '#F1F5F9' },
-              ticks: { font: { family: 'Roboto', size: 11 } }
+              title: {
+                display: true,
+                text: 'Đơn vị',
+                font: { family: 'Roboto', size: 11, weight: 'bold' }
+              }
             },
             x: { 
               grid: { display: false },
@@ -597,6 +597,42 @@
           }
         }
       });
+    }
+
+    // RENDER BẢNG 12 THÁNG DÒNG NGANG
+    function renderMonthlyTable(curr, year) {
+      document.getElementById("monthlyYearTitle").innerText = `(${year})`;
+      const monthly = (curr && Array.isArray(curr.monthly) && curr.monthly.length === 12)
+        ? curr.monthly 
+        : Array.from({ length: 12 }, () => ({ videos: 0, members: 0, budget: 0 }));
+
+      const rowVid = document.getElementById("rowMonthlyVideos");
+      const rowMem = document.getElementById("rowMonthlyMembers");
+      const rowBud = document.getElementById("rowMonthlyBudget");
+
+      let totalVids = 0;
+      let totalBud = 0;
+
+      let htmlVid = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Số video</td>`;
+      let htmlMem = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Nhân sự tham gia</td>`;
+      let htmlBud = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Tiền thưởng</td>`;
+
+      monthly.forEach(m => {
+        totalVids += m.videos;
+        totalBud += m.budget;
+
+        htmlVid += `<td class="py-2.5 px-2 border-r border-slate-200 font-semibold ${m.videos > 0 ? 'text-blue-700 bg-blue-50/30' : 'text-slate-400'}">${m.videos}</td>`;
+        htmlMem += `<td class="py-2.5 px-2 border-r border-slate-200 font-semibold ${m.members > 0 ? 'text-emerald-700' : 'text-slate-400'}">${m.members}</td>`;
+        htmlBud += `<td class="py-2.5 px-2 border-r border-slate-200 text-xs font-semibold ${m.budget > 0 ? 'text-slate-800' : 'text-slate-400'}">${m.budget > 0 ? (m.budget / 1000).toLocaleString('vi-VN') + 'k' : '0'}</td>`;
+      });
+
+      htmlVid += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black">${totalVids}</td>`;
+      htmlMem += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black">${curr?.summary?.members || 0}</td>`;
+      htmlBud += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black text-xs">${formatMoney(totalBud)}</td>`;
+
+      rowVid.innerHTML = htmlVid;
+      rowMem.innerHTML = htmlMem;
+      rowBud.innerHTML = htmlBud;
     }
 
     function renderTopVideos(curr) {
