@@ -95,8 +95,11 @@
           <i data-lucide="filter" class="w-3.5 h-3.5 text-isuzu-red"></i> CHỌN NĂM:
         </label>
         <select id="yearSelector" class="bg-white text-slate-900 font-bold text-sm rounded-lg px-3 py-1.5 border border-slate-300 focus:ring-2 focus:ring-isuzu-red focus:outline-none shadow-sm cursor-pointer">
-          <!-- Tùy chọn sẽ được nạp động từ database -->
+          <!-- Tự động đổ danh sách năm -->
         </select>
+        <button onclick="fetchSheetData()" title="Làm mới số liệu" class="p-1.5 bg-white text-slate-600 hover:text-isuzu-red rounded-lg border border-slate-200 shadow-sm transition">
+          <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+        </button>
       </div>
 
     </div>
@@ -108,7 +111,7 @@
     <!-- PHẦN 1: KPI CARDS TỔNG QUAN -->
     <section>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="kpiContainer">
-        <!-- Javascript nạp thẻ KPI ở đây -->
+        <!-- Nạp động thẻ KPI -->
       </div>
     </section>
 
@@ -120,10 +123,10 @@
             <i data-lucide="trending-up" class="w-5 h-5 text-isuzu-red"></i>
             1. Phân Tích & Đối Chiếu Số Liệu Tăng Trưởng (YoY)
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5">So sánh hiệu suất giữa năm được chọn và năm trước liền kề</p>
+          <p class="text-xs text-slate-500 mt-0.5">Số liệu trích xuất trực tiếp từ Sheet BÁO CÁO CHUNG</p>
         </div>
         <div id="compareBadge" class="text-xs font-semibold px-3 py-1 bg-slate-100 text-slate-600 rounded-full w-fit">
-          <!-- Badge năm -->
+          <!-- Badge đối chiếu -->
         </div>
       </div>
 
@@ -134,9 +137,9 @@
             <thead>
               <tr class="bg-slate-50 text-slate-600 font-bold border-y border-slate-200">
                 <th class="py-3 px-3.5">Hạng mục chỉ số</th>
-                <th class="py-3 px-3.5 text-right text-tbsg-navy" id="thYearCurrent">Năm hiện tại</th>
-                <th class="py-3 px-3.5 text-right text-slate-500" id="thYearPrev">Năm trước</th>
-                <th class="py-3 px-3.5 text-center">Tăng / Giảm</th>
+                <th class="py-3 px-3.5 text-right text-tbsg-navy" id="thYearCurrent">Năm được chọn</th>
+                <th class="py-3 px-3.5 text-right text-slate-500" id="thYearPrev">Năm trước đối chiếu</th>
+                <th class="py-3 px-3.5 text-center">Tăng / Giảm (%)</th>
               </tr>
             </thead>
             <tbody id="compareTableBody" class="divide-y divide-slate-100">
@@ -250,308 +253,359 @@
     <p>© 2026 ISUZU TÂY BẮC SÀI GÒN — Hệ thống Báo cáo Tiếp thị Nội bộ TikTok</p>
   </footer>
 
-  <!-- SCRIPT QUẢN LÝ DỮ LIỆU & RENDER DASHBOARD -->
+  <!-- SCRIPT KẾT NỐI TỰ ĐỘNG VỚI GOOGLE SHEETS -->
   <script>
-    // -------------------------------------------------------------
-    // DỮ LIỆU TẬP TRUNG (Có thể nối Webhook / API Google Sheets)
-    // -------------------------------------------------------------
-    const DATABASE = {
-      2026: {
-        summary: {
-          videos: 33,
-          members: 10,
-          budget: 5600000,
-          views: 68450
-        },
-        topVideos: [
-          {
-            author: "NGUYỄN TRỌNG ĐỨC",
-            title: "FRR650 thùng mui bạt inox độ màu đỏ",
-            link: "https://www.tiktok.com",
-            views: 3899,
-            likes: 575,
-            comments: 5,
-            saves: 11,
-            score: 12.9499
-          },
-          {
-            author: "NGUYỄN HỮU ĐOÀN",
-            title: "Giao xe tải thùng composite",
-            link: "https://www.tiktok.com",
-            views: 5759,
-            likes: 470,
-            comments: 7,
-            saves: 18,
-            score: 11.6159
-          },
-          {
-            author: "ĐỖ THỊ THẢO",
-            title: "Sale xe làm gì? Vlog 4h chiều của nhỏ sale",
-            link: "https://www.tiktok.com",
-            views: 15234,
-            likes: 329,
-            comments: 22,
-            saves: 9,
-            score: 10.4034
-          }
-        ],
-        topPersonnel: [
-          { name: "NGUYỄN TRỌNG ĐỨC", count: 8 },
-          { name: "ĐỖ THỊ THẢO", count: 6 },
-          { name: "NGUYỄN HỮU ĐOÀN", count: 5 }
-        ],
-        investedVideos: [
-          {
-            author: "LƯƠNG THỊ PHƯƠNG VI",
-            title: "Trải nghiệm và cảm nhận cảm giác lái ISUZU MU-X",
-            link: "https://www.tiktok.com",
-            duration: 120,
-            score: 0.6014,
-            reward: 100000
-          }
-        ]
-      },
+    /**
+     * DÁN LINK CSV XUẤT BẢN CỦA SHEET "BÁO CÁO CHUNG" VÀO BIẾN DƯỚI ĐÂY:
+     * (Vào Google Sheets > Tệp > Chia sẻ > Xuất bản lên web > Chọn trang "BÁO CÁO CHUNG" > Định dạng .csv > Xuất bản)
+     */
+    const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/YOUR_PUBLISHED_ID/pub?gid=0&single=true&output=csv";
 
-      2025: {
-        summary: {
-          videos: 42,
-          members: 9,
-          budget: 7000000,
-          views: 89300
-        },
-        topVideos: [
-          {
-            author: "NGUYỄN HỮU ĐOÀN",
-            title: "Dời xe, chuẩn bị bàn giao xe Quang Tường",
-            link: "https://vt.tiktok.com/ZSS9bvUwY/",
-            views: 4042,
-            likes: 651,
-            comments: 4,
-            saves: 10,
-            score: 34.2
-          },
-          {
-            author: "NGUYỄN HỮU ĐOÀN",
-            title: "Bàn giao xe Quang Tường - Cảnh tài xế chạy xe đi",
-            link: "https://vt.tiktok.com/ZSS9bxCHT/",
-            views: 11014,
-            likes: 1145,
-            comments: 2,
-            saves: 35,
-            score: 28.5
-          },
-          {
-            author: "ĐẶNG THỊ NGỌC ANH",
-            title: "Clip vui: Cảnh các anh em sale dời xe, cười nói trò chuyện với nhau",
-            link: "https://vt.tiktok.com/ZSS9peuD1/",
-            views: 13903,
-            likes: 1155,
-            comments: 2,
-            saves: 26,
-            score: 24.1
-          }
-        ],
-        topPersonnel: [
-          { name: "NGUYỄN HỮU ĐOÀN", count: 11 },
-          { name: "ĐẶNG THỊ NGỌC ANH", count: 9 },
-          { name: "NGUYỄN TRỌNG ĐỨC", count: 7 }
-        ],
-        investedVideos: [
-          {
-            author: "Nguyễn Trọng Đức",
-            title: "Nội thất xe D-Max Type Z",
-            link: "https://www.tiktok.com/@ducisuzu98/video/7496700535513337096",
-            duration: 234,
-            score: 1.21,
-            reward: 1250000
-          },
-          {
-            author: "Nguyễn Trọng Đức",
-            title: "Giới thiệu QKR210 E5 thùng kín 2025",
-            link: "https://www.tiktok.com/@ducisuzu98/video/7496338419023351058",
-            duration: 229,
-            score: 7.39,
-            reward: 150000
-          }
-        ]
-      },
-
-      2024: {
-        summary: {
-          videos: 14,
-          members: 18,
-          budget: 0,
-          views: 24000
-        },
-        topVideos: [],
-        topPersonnel: [],
-        investedVideos: []
-      }
+    let RAW_SHEET_ROWS = [];
+    let PARSED_DATA = {
+      selectedYear: "2026",
+      compareYear: "2025",
+      summaryRows: [],
+      topVideos: [],
+      topPersonnel: [],
+      investedVideos: []
     };
 
     let chartInstance = null;
 
-    // Định dạng tiền tệ
-    function formatMoney(amount) {
-      if (!amount || amount === 0) return "— đ";
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    // Tự động phân tách chuỗi CSV an toàn
+    function parseCSV(text) {
+      const p = [];
+      let row = [''];
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        let c = text[i];
+        let next = text[i+1];
+        if (c === '"') {
+          if (inQuotes && next === '"') { row[row.length - 1] += '"'; i++; }
+          else { inQuotes = !inQuotes; }
+        } else if (c === ',' && !inQuotes) {
+          row.push('');
+        } else if ((c === '\r' || c === '\n') && !inQuotes) {
+          if (c === '\r' && next === '\n') i++;
+          p.push(row);
+          row = [''];
+        } else {
+          row[row.length - 1] += c;
+        }
+      }
+      if (row.length > 1 || row[0] !== '') p.push(row);
+      return p.map(r => r.map(c => c.trim()));
     }
 
-    // Định dạng số
-    function formatNumber(num) {
-      return new Intl.NumberFormat('vi-VN').format(num || 0);
-    }
+    // Tải dữ liệu trực tiếp từ Google Sheets
+    async function fetchSheetData() {
+      const kpiBox = document.getElementById("kpiContainer");
+      kpiBox.innerHTML = `<div class="col-span-4 p-8 text-center text-slate-500 font-bold animate-pulse bg-white rounded-2xl border border-slate-200">⏳ Đang kết nối và đồng bộ số liệu từ sheet BÁO CÁO CHUNG...</div>`;
 
-    // Khởi tạo selector năm
-    function initYearSelector() {
-      const selector = document.getElementById("yearSelector");
-      const years = Object.keys(DATABASE).sort((a, b) => b - a);
-      
-      selector.innerHTML = years.map(y => `<option value="${y}">Năm ${y}</option>`).join('');
-      selector.addEventListener("change", (e) => {
-        renderDashboard(parseInt(e.target.value, 10));
-      });
-
-      renderDashboard(parseInt(years[0], 10));
-    }
-
-    // Render toàn bộ Dashboard
-    function renderDashboard(year) {
-      const current = DATABASE[year] || null;
-      const prevYear = year - 1;
-      const prev = DATABASE[prevYear] || null;
-
-      renderKPICards(current, prev, year, prevYear);
-      renderYoYComparison(current, prev, year, prevYear);
-      renderTopVideos(current);
-      renderTopPersonnel(current);
-      renderLongVideos(current);
-
-      lucide.createIcons();
-    }
-
-    // 1. Render Thẻ KPI
-    function renderKPICards(curr, prev, currYear, prevYear) {
-      const container = document.getElementById("kpiContainer");
-      if (!curr) {
-        container.innerHTML = `<div class="col-span-4 p-8 text-center text-slate-400 bg-white rounded-2xl">Không có dữ liệu cho năm ${currYear}</div>`;
+      // Kiểm tra link mẫu chưa thay
+      if (GOOGLE_SHEET_CSV_URL.includes("YOUR_PUBLISHED_ID")) {
+        kpiBox.innerHTML = `
+          <div class="col-span-4 p-6 bg-amber-50 border border-amber-200 rounded-2xl text-amber-800 text-sm">
+            <p class="font-bold mb-1">⚠️ Chưa cấu hình link Google Sheets CSV:</p>
+            <p>Vui lòng mở file Google Sheets $\rightarrow$ chọn <b>Tệp > Chia sẻ > Xuất bản lên web</b> $\rightarrow$ Chọn trang <b>BÁO CÁO CHUNG</b> $\rightarrow$ Định dạng <b>.csv</b> $\rightarrow$ Dán link vào biến <code>GOOGLE_SHEET_CSV_URL</code> trong file HTML này.</p>
+          </div>
+        `;
         return;
       }
 
-      const calcDiff = (cVal, pVal) => {
-        if (!pVal || pVal === 0) return null;
-        return ((cVal - pVal) / pVal) * 100;
-      };
+      try {
+        // Thêm timestamp để tránh bộ nhớ đệm (cache) của trình duyệt
+        const response = await fetch(GOOGLE_SHEET_CSV_URL + "&_t=" + new Date().getTime());
+        const csvText = await response.text();
+        RAW_SHEET_ROWS = parseCSV(csvText);
 
-      const kpis = [
-        {
-          label: "Tổng video xuất bản",
-          val: formatNumber(curr.summary.videos),
-          diff: prev ? calcDiff(curr.summary.videos, prev.summary.videos) : null,
-          icon: "video",
-          color: "text-blue-600",
-          bg: "bg-blue-50"
-        },
-        {
-          label: "Nhân sự tham gia",
-          val: formatNumber(curr.summary.members),
-          diff: prev ? calcDiff(curr.summary.members, prev.summary.members) : null,
-          icon: "users",
-          color: "text-emerald-600",
-          bg: "bg-emerald-50"
-        },
-        {
-          label: "Tổng ngân sách thưởng",
-          val: formatMoney(curr.summary.budget),
-          diff: prev ? calcDiff(curr.summary.budget, prev.summary.budget) : null,
-          icon: "wallet",
-          color: "text-amber-600",
-          bg: "bg-amber-50"
-        },
-        {
-          label: "Tổng lượt xem (Views)",
-          val: formatNumber(curr.summary.views),
-          diff: prev ? calcDiff(curr.summary.views, prev.summary.views) : null,
-          icon: "eye",
-          color: "text-isuzu-red",
-          bg: "bg-red-50"
-        }
-      ];
-
-      container.innerHTML = kpis.map(item => {
-        let diffBadge = `<span class="text-[11px] text-slate-400 font-medium">Không đủ số liệu</span>`;
-        if (item.diff !== null) {
-          const isUp = item.diff >= 0;
-          diffBadge = `
-            <span class="inline-flex items-center gap-0.5 text-xs font-bold ${isUp ? 'text-emerald-600' : 'text-rose-600'}">
-              <i data-lucide="${isUp ? 'arrow-up-right' : 'arrow-down-right'}" class="w-3.5 h-3.5"></i>
-              ${Math.abs(item.diff).toFixed(1)}%
-            </span>
-            <span class="text-[10px] text-slate-400">vs ${prevYear}</span>
-          `;
-        }
-
-        return `
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">${item.label}</span>
-              <div class="p-2 rounded-xl ${item.bg} ${item.color}">
-                <i data-lucide="${item.icon}" class="w-5 h-5"></i>
-              </div>
-            </div>
-            <div class="mt-3">
-              <div class="text-2xl font-extrabold text-slate-900">${item.val}</div>
-              <div class="mt-1 flex items-center gap-1.5">${diffBadge}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
+        initYearSelector();
+        processSheetData();
+        renderDashboard();
+      } catch (error) {
+        console.error("Lỗi:", error);
+        kpiBox.innerHTML = `<div class="col-span-4 p-8 text-center text-rose-600 font-bold bg-white rounded-2xl border border-slate-200">❌ Không thể tải dữ liệu từ Google Sheets. Vui lòng kiểm tra quyền công khai của link Xuất bản web!</div>`;
+      }
     }
 
-    // 2. Render So sánh YoY
-    function renderYoYComparison(curr, prev, currYear, prevYear) {
-      document.getElementById("thYearCurrent").innerText = `Năm ${currYear}`;
-      document.getElementById("thYearPrev").innerText = `Năm ${prevYear}`;
-      document.getElementById("compareBadge").innerText = `Đối chiếu: ${currYear} vs ${prevYear}`;
+    // Khởi tạo bộ chọn năm
+    function initYearSelector() {
+      const selector = document.getElementById("yearSelector");
+      
+      // Quét tất cả các ô trên sheet để tìm các năm có xuất hiện
+      const foundYears = new Set(["2027", "2026", "2025", "2024"]);
+      RAW_SHEET_ROWS.forEach(row => {
+        row.forEach(cell => {
+          if (/^202[0-9]$/.test(cell)) foundYears.add(cell);
+        });
+      });
 
-      const tbody = document.getElementById("compareTableBody");
+      const sortedYears = Array.from(foundYears).sort((a, b) => b - a);
 
-      const rows = [
-        { label: "Tổng số video sản xuất", c: curr?.summary.videos, p: prev?.summary.videos, isMoney: false },
-        { label: "Tổng nhân sự tham gia", c: curr?.summary.members, p: prev?.summary.members, isMoney: false },
-        { label: "Tổng ngân sách chi thưởng", c: curr?.summary.budget, p: prev?.summary.budget, isMoney: true },
-        { label: "Tổng lượt xem ghi nhận", c: curr?.summary.views, p: prev?.summary.views, isMoney: false },
-      ];
-
-      tbody.innerHTML = rows.map(r => {
-        let diffHtml = `<span class="text-xs text-slate-400 font-medium">Không đủ số liệu để so sánh</span>`;
-        if (r.c !== undefined && r.p !== undefined && r.p > 0) {
-          const diff = ((r.c - r.p) / r.p) * 100;
-          const isUp = diff >= 0;
-          diffHtml = `
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${isUp ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">
-              ${isUp ? '+' : ''}${diff.toFixed(1)}%
-            </span>
-          `;
+      // Nhận diện năm hiện tại đang được chọn ở ô B2 của sheet
+      let detectedB2 = "";
+      for (let i = 0; i < Math.min(5, RAW_SHEET_ROWS.length); i++) {
+        for (let j = 0; j < RAW_SHEET_ROWS[i].length; j++) {
+          if (/^202[0-9]$/.test(RAW_SHEET_ROWS[i][j])) {
+            detectedB2 = RAW_SHEET_ROWS[i][j];
+            break;
+          }
         }
+        if (detectedB2) break;
+      }
+
+      PARSED_DATA.selectedYear = detectedB2 || sortedYears[0];
+      PARSED_DATA.compareYear = (parseInt(PARSED_DATA.selectedYear, 10) - 1).toString();
+
+      selector.innerHTML = sortedYears.map(y => `
+        <option value="${y}" ${y === PARSED_DATA.selectedYear ? 'selected' : ''}>Năm ${y}</option>
+      `).join('');
+
+      selector.onchange = (e) => {
+        PARSED_DATA.selectedYear = e.target.value;
+        PARSED_DATA.compareYear = (parseInt(PARSED_DATA.selectedYear, 10) - 1).toString();
+        // Cập nhật giao diện
+        renderDashboard();
+      };
+    }
+
+    // Tách cấu trúc các bảng từ sheet BÁO CÁO CHUNG
+    function processSheetData() {
+      const rows = RAW_SHEET_ROWS;
+      if (!rows || rows.length === 0) return;
+
+      // 1. Tách Bảng Tổng quan (Bắt đầu sau chữ "1. Bảng số liệu tổng quan")
+      PARSED_DATA.summaryRows = [];
+      let sumIdx = rows.findIndex(r => r.some(c => c.includes("1. Bảng số liệu") || c.includes("Hạng mục")));
+      if (sumIdx !== -1) {
+        // Lấy 4 dòng chỉ số tiếp theo (Tổng video, nhân sự, tiền, lượt xem)
+        for (let i = sumIdx + 1; i < sumIdx + 6 && i < rows.length; i++) {
+          const r = rows[i];
+          if (r && r[0] && !r[0].includes("2.")) {
+            PARSED_DATA.summaryRows.push({
+              title: r[0],
+              curr: r[1] || "0",
+              prev: r[2] || "0",
+              growth: r[3] || "—"
+            });
+          }
+        }
+      }
+
+      // 2. Tách Bảng Top 3 Video (Bắt đầu sau chữ "2. Top 3 video")
+      PARSED_DATA.topVideos = [];
+      let topVidIdx = rows.findIndex(r => r.some(c => c.includes("2. Top 3 video")));
+      if (topVidIdx !== -1) {
+        for (let i = topVidIdx + 2; i < topVidIdx + 5 && i < rows.length; i++) {
+          const r = rows[i];
+          if (r && (r[0] || r[1]) && !r[0].includes("3.")) {
+            // Tự căn chuẩn cột dựa trên vị trí dữ liệu
+            const author = r[0] && !r[0].includes("Top") ? r[0] : (r[1] || "");
+            const title = r[2] || r[1] || "";
+            const link = r[3] || "#";
+            const views = r[4] || "0";
+            const likes = r[5] || "0";
+            const score = r[8] || r[7] || "0";
+
+            if (author) {
+              PARSED_DATA.topVideos.push({ author, title, link, views, likes, score });
+            }
+          }
+        }
+      }
+
+      // 3. Tách Bảng Top 3 Nhân sự (Bắt đầu sau chữ "3. Top 3 nhân sự")
+      PARSED_DATA.topPersonnel = [];
+      let topPerIdx = rows.findIndex(r => r.some(c => c.includes("3. Top 3 nhân sự")));
+      if (topPerIdx !== -1) {
+        for (let i = topPerIdx + 2; i < topPerIdx + 5 && i < rows.length; i++) {
+          const r = rows[i];
+          if (r && (r[0] || r[1]) && !r[0].includes("4.")) {
+            const name = r[0] && !r[0].includes("Top") ? r[0] : (r[1] || "");
+            const count = r[2] || r[1] || "0";
+            if (name) {
+              PARSED_DATA.topPersonnel.push({ name, count });
+            }
+          }
+        }
+      }
+
+      // 4. Tách Bảng Video >= 90s (Bắt đầu sau chữ "4. Danh sách Video")
+      PARSED_DATA.investedVideos = [];
+      let longVidIdx = rows.findIndex(r => r.some(c => c.includes("4. Danh sách Video") || c.includes("Thời lượng")));
+      if (longVidIdx !== -1) {
+        for (let i = longVidIdx + 2; i < rows.length; i++) {
+          const r = rows[i];
+          if (r && (r[0] || r[1]) && !r[0].includes("Tổng")) {
+            const author = r[0] && !r[0].includes("4.") ? r[0] : (r[1] || "");
+            const title = r[2] || r[1] || "";
+            const link = r[3] || "#";
+            const duration = r[4] || "0";
+            const score = r[5] || "0";
+            const reward = r[6] || "0";
+
+            if (author) {
+              PARSED_DATA.investedVideos.push({ author, title, link, duration, score, reward });
+            }
+          }
+        }
+      }
+    }
+
+    // Hiển thị dữ liệu lên giao diện
+    function renderDashboard() {
+      const { selectedYear, compareYear, summaryRows, topVideos, topPersonnel, investedVideos } = PARSED_DATA;
+
+      // 1. Render Thẻ KPI
+      const kpiContainer = document.getElementById("kpiContainer");
+      const icons = ["video", "users", "wallet", "eye"];
+      const colors = ["text-blue-600", "text-emerald-600", "text-amber-600", "text-isuzu-red"];
+      const bgs = ["bg-blue-50", "bg-emerald-50", "bg-amber-50", "bg-red-50"];
+
+      if (summaryRows.length === 0) {
+        kpiContainer.innerHTML = `<div class="col-span-4 p-8 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">Không có dữ liệu cho năm ${selectedYear}</div>`;
+      } else {
+        kpiContainer.innerHTML = summaryRows.map((item, idx) => {
+          const isNegative = item.growth.includes("-");
+          const isNoData = item.growth.includes("Không") || item.growth === "—";
+
+          let growthBadge = `<span class="text-slate-400 font-medium">${item.growth}</span>`;
+          if (!isNoData) {
+            growthBadge = `
+              <span class="inline-flex items-center gap-0.5 font-bold ${isNegative ? 'text-rose-600' : 'text-emerald-600'}">
+                <i data-lucide="${isNegative ? 'arrow-down-right' : 'arrow-up-right'}" class="w-3.5 h-3.5"></i>
+                ${item.growth}
+              </span>
+              <span class="text-[10px] text-slate-400">vs ${compareYear}</span>
+            `;
+          }
+
+          return `
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">${item.title}</span>
+                <div class="p-2 rounded-xl ${bgs[idx] || 'bg-slate-50'} ${colors[idx] || 'text-slate-600'}">
+                  <i data-lucide="${icons[idx] || 'bar-chart'}" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="mt-3">
+                <div class="text-2xl font-extrabold text-slate-900">${item.curr}</div>
+                <div class="mt-1 flex items-center gap-1.5 text-xs">${growthBadge}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 2. Render Bảng So Sánh YoY
+      document.getElementById("thYearCurrent").innerText = `Năm ${selectedYear}`;
+      document.getElementById("thYearPrev").innerText = `Năm ${compareYear}`;
+      document.getElementById("compareBadge").innerText = `Đối chiếu: ${selectedYear} vs ${compareYear}`;
+
+      const tbodyCompare = document.getElementById("compareTableBody");
+      tbodyCompare.innerHTML = summaryRows.map(r => {
+        const isNeg = r.growth.includes("-");
+        const isNoData = r.growth.includes("Không") || r.growth === "—";
 
         return `
           <tr class="hover:bg-slate-50 transition-colors">
-            <td class="py-3 px-3.5 font-medium text-slate-800">${r.label}</td>
-            <td class="py-3 px-3.5 text-right font-bold text-tbsg-navy">${r.isMoney ? formatMoney(r.c) : formatNumber(r.c)}</td>
-            <td class="py-3 px-3.5 text-right text-slate-500 font-medium">${r.isMoney ? formatMoney(r.p) : formatNumber(r.p)}</td>
-            <td class="py-3 px-3.5 text-center">${diffHtml}</td>
+            <td class="py-3 px-3.5 font-medium text-slate-800">${r.title}</td>
+            <td class="py-3 px-3.5 text-right font-bold text-tbsg-navy">${r.curr}</td>
+            <td class="py-3 px-3.5 text-right text-slate-500 font-medium">${r.prev}</td>
+            <td class="py-3 px-3.5 text-center text-xs font-bold ${isNoData ? 'text-slate-400' : (isNeg ? 'text-rose-600' : 'text-emerald-600')}">
+              ${r.growth}
+            </td>
           </tr>
         `;
       }).join('');
 
-      // Vẽ biểu đồ Chart.js
-      renderChart(curr, prev, currYear, prevYear);
+      // Vẽ Biểu đồ Chart.js
+      renderChart();
+
+      // 3. Render Top 3 Video
+      const medals = ["🥇", "🥈", "🥉"];
+      const tbodyTopVid = document.getElementById("topVideosBody");
+      if (topVideos.length === 0) {
+        tbodyTopVid.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Không có dữ liệu video nổi bật</td></tr>`;
+      } else {
+        tbodyTopVid.innerHTML = topVideos.map((item, idx) => `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="py-3 px-3 text-center text-lg">${medals[idx] || (idx + 1)}</td>
+            <td class="py-3 px-3 font-bold text-slate-800 text-xs uppercase">${item.author}</td>
+            <td class="py-3 px-3 text-slate-600 text-xs max-w-[220px] truncate" title="${item.title}">${item.title}</td>
+            <td class="py-3 px-3 text-center text-xs text-slate-500">${item.views} xem | ${item.likes} tim</td>
+            <td class="py-3 px-3 text-right font-extrabold text-isuzu-red text-sm">${item.score}</td>
+            <td class="py-3 px-3 text-center">
+              <a href="${item.link}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline">
+                Xem clip <i data-lucide="external-link" class="w-3 h-3"></i>
+              </a>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // 4. Render Top 3 Nhân sự
+      const topPerBox = document.getElementById("topPersonnelList");
+      if (topPersonnel.length === 0) {
+        topPerBox.innerHTML = `<p class="text-center text-slate-400 text-xs py-6">Chưa có dữ liệu nhân sự</p>`;
+      } else {
+        topPerBox.innerHTML = topPersonnel.map((p, idx) => `
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold bg-white text-slate-700 border border-slate-200">
+                ${idx + 1}
+              </span>
+              <span class="text-xs font-bold text-slate-800 uppercase">${p.name}</span>
+            </div>
+            <div class="font-extrabold text-tbsg-navy text-sm">${p.count} <span class="text-[11px] font-normal text-slate-400">video</span></div>
+          </div>
+        `).join('');
+      }
+
+      // 5. Render Video >= 90s
+      const longVidBody = document.getElementById("longVideosBody");
+      if (investedVideos.length === 0) {
+        longVidBody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Không có video nào thời lượng từ 90 giây trở lên</td></tr>`;
+      } else {
+        longVidBody.innerHTML = investedVideos.map(item => `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="py-3 px-3 font-bold text-slate-800 text-xs uppercase">${item.author}</td>
+            <td class="py-3 px-3 text-slate-600 text-xs max-w-[280px]">${item.title}</td>
+            <td class="py-3 px-3 text-center">
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold">
+                <i data-lucide="clock" class="w-3 h-3"></i> ${item.duration}s
+              </span>
+            </td>
+            <td class="py-3 px-3 text-right font-bold text-slate-700 text-xs">${item.score}</td>
+            <td class="py-3 px-3 text-right font-extrabold text-emerald-600 text-xs">${item.reward}</td>
+            <td class="py-3 px-3 text-center">
+              <a href="${item.link}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline">
+                TikTok <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+              </a>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      lucide.createIcons();
     }
 
-    function renderChart(curr, prev, currYear, prevYear) {
+    // Vẽ biểu đồ Chart.js tự động cập nhật
+    function renderChart() {
       const ctx = document.getElementById('yoyChart').getContext('2d');
       if (chartInstance) chartInstance.destroy();
+
+      const parseNum = (val) => {
+        if (!val) return 0;
+        let s = val.toString().replace(/[^\d]/g, "");
+        return parseFloat(s) || 0;
+      };
+
+      const vCur = parseNum(PARSED_DATA.summaryRows[0]?.curr);
+      const vPrev = parseNum(PARSED_DATA.summaryRows[0]?.prev);
+      const mCur = parseNum(PARSED_DATA.summaryRows[1]?.curr);
+      const mPrev = parseNum(PARSED_DATA.summaryRows[1]?.prev);
 
       chartInstance = new Chart(ctx, {
         type: 'bar',
@@ -559,14 +613,14 @@
           labels: ['Tổng Video', 'Nhân sự tham gia'],
           datasets: [
             {
-              label: `Năm ${currYear}`,
-              data: [curr?.summary.videos || 0, curr?.summary.members || 0],
+              label: `Năm ${PARSED_DATA.selectedYear}`,
+              data: [vCur, mCur],
               backgroundColor: '#ED1B24',
               borderRadius: 6,
             },
             {
-              label: `Năm ${prevYear}`,
-              data: [prev?.summary.videos || 0, prev?.summary.members || 0],
+              label: `Năm ${PARSED_DATA.compareYear}`,
+              data: [vPrev, mPrev],
               backgroundColor: '#94A3B8',
               borderRadius: 6,
             }
@@ -586,101 +640,8 @@
       });
     }
 
-    // 3. Render Top Videos
-    function renderTopVideos(curr) {
-      const tbody = document.getElementById("topVideosBody");
-      const list = curr?.topVideos || [];
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Không có dữ liệu video cho năm này</td></tr>`;
-        return;
-      }
-
-      const medals = ["🥇", "🥈", "🥉"];
-
-      tbody.innerHTML = list.map((item, idx) => `
-        <tr class="hover:bg-slate-50 transition-colors">
-          <td class="py-3 px-3 text-center text-lg">${medals[idx] || (idx + 1)}</td>
-          <td class="py-3 px-3 font-bold text-slate-800 text-xs uppercase">${item.author}</td>
-          <td class="py-3 px-3 text-slate-600 text-xs max-w-[220px] truncate" title="${item.title}">${item.title}</td>
-          <td class="py-3 px-3 text-center text-xs text-slate-500">
-            <span class="inline-flex items-center gap-1 font-semibold text-slate-700">${formatNumber(item.views)} <i data-lucide="eye" class="w-3 h-3 text-slate-400"></i></span>
-            <span class="text-slate-300">|</span>
-            <span class="inline-flex items-center gap-1 font-semibold text-rose-600">${formatNumber(item.likes)} <i data-lucide="heart" class="w-3 h-3"></i></span>
-          </td>
-          <td class="py-3 px-3 text-right font-extrabold text-isuzu-red text-sm">${item.score.toFixed(2)}</td>
-          <td class="py-3 px-3 text-center">
-            <a href="${item.link}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline">
-              Xem clip <i data-lucide="external-link" class="w-3 h-3"></i>
-            </a>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    // 4. Render Top Nhân sự
-    function renderTopPersonnel(curr) {
-      const container = document.getElementById("topPersonnelList");
-      const list = curr?.topPersonnel || [];
-
-      if (list.length === 0) {
-        container.innerHTML = `<p class="text-center text-slate-400 text-xs py-6">Chưa có thông tin nhân sự</p>`;
-        return;
-      }
-
-      const badgeColors = [
-        "bg-amber-100 text-amber-800 border-amber-300",
-        "bg-slate-100 text-slate-700 border-slate-300",
-        "bg-amber-50 text-amber-700 border-amber-200"
-      ];
-
-      container.innerHTML = list.map((p, idx) => `
-        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition-colors">
-          <div class="flex items-center gap-3">
-            <span class="w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold border ${badgeColors[idx] || 'bg-white text-slate-500'}">
-              ${idx + 1}
-            </span>
-            <span class="text-xs font-bold text-slate-800 uppercase">${p.name}</span>
-          </div>
-          <div class="flex items-center gap-1.5 font-extrabold text-tbsg-navy text-sm">
-            ${p.count} <span class="text-[11px] font-normal text-slate-400">video</span>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // 5. Render Video > 90s
-    function renderLongVideos(curr) {
-      const tbody = document.getElementById("longVideosBody");
-      const list = curr?.investedVideos || [];
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Không có video nào trên 90 giây</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = list.map(item => `
-        <tr class="hover:bg-slate-50 transition-colors">
-          <td class="py-3 px-3 font-bold text-slate-800 text-xs uppercase">${item.author}</td>
-          <td class="py-3 px-3 text-slate-600 text-xs max-w-[280px]">${item.title}</td>
-          <td class="py-3 px-3 text-center">
-            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold">
-              <i data-lucide="clock" class="w-3 h-3"></i> ${item.duration}s
-            </span>
-          </td>
-          <td class="py-3 px-3 text-right font-bold text-slate-700 text-xs">${item.score.toFixed(2)}</td>
-          <td class="py-3 px-3 text-right font-extrabold text-emerald-600 text-xs">${formatMoney(item.reward)}</td>
-          <td class="py-3 px-3 text-center">
-            <a href="${item.link}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline">
-              TikTok <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-            </a>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    // Khởi động chạy trang
-    document.addEventListener("DOMContentLoaded", initYearSelector);
+    // Chạy khi trang web tải xong
+    document.addEventListener("DOMContentLoaded", fetchSheetData);
   </script>
 </body>
 </html>
