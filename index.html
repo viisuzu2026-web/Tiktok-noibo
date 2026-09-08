@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
   
   <!-- Chart.js & Lucide Icons -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -56,58 +56,52 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-red-800 selection:text-white text-slate-800">
 
-  <!-- TOP HEADER ĐỎ ĐÔ #8c0000 THIẾT KẾ SANG TRỌNG & TƯƠNG PHẢN CAO -->
+  <!-- TOP HEADER ĐỎ ĐÔ #8c0000 -->
   <header class="bg-[#8c0000] text-white shadow-md sticky top-0 z-30 border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       
-      <!-- KHỐI 1: 2 LOGO LỚN & TIÊU ĐỀ -->
-      <div class="flex items-center gap-4 flex-wrap sm:flex-nowrap">
-        
-        <!-- CẶP 2 LOGO ĐẶT CẠNH NHAU (TO RÕ, NỀN TRẮNG SÁCH SẼ) -->
-        <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-2xl shadow-md shrink-0 border border-slate-200">
-          <!-- Logo 1: ISUZU CHÍNH HÃNG -->
+      <!-- 2 LOGO & TIÊU ĐỀ -->
+      <div class="flex items-center gap-3.5 flex-wrap sm:flex-nowrap">
+        <div class="flex items-center gap-2.5 bg-white px-3 py-1.5 rounded-xl shadow-sm shrink-0 border border-slate-200">
           <img 
-            src="https://isuzu-vietnam.com/wp-content/uploads/2020/01/Isuzu-logo-1991-3840x2160.png" 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Isuzu_logo.svg/2560px-Isuzu_logo.svg.png" 
             alt="Logo ISUZU" 
-            class="h-7 sm:h-8 w-auto object-contain" 
+            class="h-6 sm:h-7 w-auto object-contain" 
           />
-          <!-- Đường kẻ ngăn cách -->
-          <div class="h-6 w-[2px] bg-slate-300"></div>
-          <!-- Logo 2: TÂY BẮC SÀI GÒN -->
+          <div class="h-5 w-[1px] bg-slate-300"></div>
           <img 
             src="https://taybacsaigon.com/wp-content/uploads/2023/05/logo-isuzu-tay-bac-sai-gon.png" 
             alt="Logo Tây Bắc Sài Gòn" 
-            class="h-7 sm:h-8 w-auto object-contain"
+            class="h-6 sm:h-7 w-auto object-contain"
             onerror="this.style.display='none'; document.getElementById('textFallback').style.display='block';"
           />
-          <span id="textFallback" style="display:none;" class="text-[#8c0000] text-xs font-black tracking-tight">TÂY BẮC SÀI GÒN</span>
+          <span id="textFallback" style="display:none;" class="text-[#8c0000] text-xs font-black">TÂY BẮC SÀI GÒN</span>
         </div>
 
-        <!-- TIÊU ĐỀ BÁO CÁO TO RÕ, TƯƠNG PHẢN MẠNH -->
         <div>
           <div class="flex items-center gap-2">
-            <span class="bg-yellow-400 text-slate-900 text-xs font-black px-2 py-0.5 rounded shadow-sm">ITB</span>
-            <span class="text-white/50">•</span>
-            <h1 class="text-base sm:text-lg md:text-xl font-black text-white tracking-wide uppercase drop-shadow">
+            <span class="bg-yellow-400 text-slate-900 text-xs font-black px-1.5 py-0.5 rounded">ITB</span>
+            <span class="text-white/40">•</span>
+            <h1 class="text-base sm:text-lg md:text-xl font-black text-white tracking-wide uppercase">
               BÁO CÁO CHƯƠNG TRÌNH TIKTOK NỘI BỘ
             </h1>
           </div>
-          <p class="text-xs sm:text-sm text-yellow-300 font-bold mt-1 tracking-wide">
+          <p class="text-xs text-yellow-300 font-bold mt-0.5">
             Chiến dịch: <span class="text-white italic">“Cùng Tây Bắc bứt phá lên trend”</span>
           </p>
         </div>
       </div>
 
-      <!-- KHỐI 2: BỘ LỌC CHỌN NĂM NỔI BẬT -->
-      <div class="flex items-center gap-2.5 bg-black/30 p-2 rounded-2xl border border-white/20 shrink-0 self-start lg:self-auto shadow-inner">
-        <label for="yearSelector" class="text-xs sm:text-sm font-extrabold text-white pl-2 flex items-center gap-1.5 whitespace-nowrap">
-          <i data-lucide="calendar" class="w-4 h-4 text-yellow-400"></i> CHỌN NĂM BÁO CÁO:
+      <!-- BỘ LỌC CHỌN NĂM -->
+      <div class="flex items-center gap-2 bg-black/25 p-1.5 rounded-xl border border-white/20 shrink-0 self-start lg:self-auto">
+        <label for="yearSelector" class="text-xs font-bold text-white pl-2 flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="calendar" class="w-3.5 h-3.5 text-yellow-400"></i> CHỌN NĂM:
         </label>
-        <select id="yearSelector" class="bg-white text-slate-900 font-extrabold text-sm rounded-xl px-4 py-2 border-0 focus:ring-2 focus:ring-yellow-400 focus:outline-none shadow-md cursor-pointer">
+        <select id="yearSelector" class="bg-white text-slate-900 font-bold text-xs sm:text-sm rounded-lg px-3 py-1.5 border-0 focus:ring-2 focus:ring-yellow-400 focus:outline-none shadow-sm cursor-pointer">
           <!-- Tự động nạp năm -->
         </select>
-        <button onclick="fetchSheetData()" title="Làm mới số liệu" class="p-2 bg-white/20 hover:bg-white text-white hover:text-[#8c0000] rounded-xl border border-white/20 transition shadow-sm">
-          <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+        <button onclick="fetchSheetData()" title="Làm mới số liệu" class="p-1.5 bg-white/10 hover:bg-white text-white hover:text-[#8c0000] rounded-lg border border-white/20 transition">
+          <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
         </button>
       </div>
 
@@ -120,27 +114,27 @@
     <!-- PHẦN 1: KPI CARDS TỔNG QUAN -->
     <section>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="kpiContainer">
-        <!-- Nạp động thẻ KPI -->
+        <!-- Nạp thẻ KPI -->
       </div>
     </section>
 
-    <!-- PHẦN 2: PHÂN TÍCH TĂNG TRƯỞNG & BIỂU ĐỒ ĐƯỜNG (LINE CHART) -->
+    <!-- PHẦN 2: SO SÁNH NĂM (YoY) & BIỂU ĐỒ ĐƯỜNG -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2 mb-5">
         <div>
           <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
             <i data-lucide="trending-up" class="w-5 h-5 text-[#8c0000]"></i>
-            1. PHÂN TÍCH VÀ ĐỐI CHIẾU SỐ LIỆU
+            1. Phân Tích & Đối Chiếu Số Liệu Tăng Trưởng (YoY)
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5">Hiệu suất hoạt động giữa 2 năm và xu hướng diễn biến theo dòng thời gian</p>
+          <p class="text-xs text-slate-500 mt-0.5">So sánh năm hiện tại với năm trước liền kề</p>
         </div>
         <div id="compareBadge" class="text-xs font-semibold px-3 py-1 bg-red-50 text-[#8c0000] border border-red-100 rounded-full w-fit">
-          <!-- Badge đối chiếu -->
+          <!-- Badge -->
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        <!-- Bảng số liệu chi tiết -->
+        <!-- Bảng chỉ số -->
         <div class="lg:col-span-7 overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm">
             <thead>
@@ -157,12 +151,10 @@
           </table>
         </div>
 
-        <!-- Biểu đồ xu hướng (Line Chart) -->
+        <!-- Biểu đồ đường -->
         <div class="lg:col-span-5 bg-slate-50/80 p-4 rounded-xl border border-slate-200">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">
-              Xu hướng: Video & Nhân sự
-            </h3>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Xu hướng qua các năm</h3>
             <span class="text-[11px] text-slate-400">Đơn vị: Số lượng</span>
           </div>
           <div class="relative h-56">
@@ -172,17 +164,67 @@
       </div>
     </section>
 
+    <!-- PHẦN MỚI: TÌNH TRẠNG THAM GIA QUA TỪNG THÁNG TRONG NĂM (DÒNG NGANG) -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2 mb-4">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-600"></i>
+            2. Tình Trạng Tham Gia Qua Từng Tháng Trong Năm <span id="monthlyYearTitle" class="text-[#8c0000]"></span>
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">Chi tiết số lượng video, nhân sự và tiền thưởng của 12 tháng</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="w-full text-center text-xs sm:text-sm min-w-[850px] border border-slate-200">
+          <thead>
+            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 text-xs">
+              <th class="py-2.5 px-3 text-left w-36 bg-slate-200/70 border-r border-slate-200">CHỈ SỐ / THÁNG</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 1</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 2</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 3</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 4</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 5</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 6</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 7</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 8</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 9</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 10</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 11</th>
+              <th class="py-2.5 px-2 border-r border-slate-200">Tháng 12</th>
+              <th class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black">CẢ NĂM</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium">
+            <!-- Dòng 1: Số video -->
+            <tr id="rowMonthlyVideos" class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Số video</td>
+            </tr>
+            <!-- Dòng 2: Nhân sự tham gia -->
+            <tr id="rowMonthlyMembers" class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Nhân sự tham gia</td>
+            </tr>
+            <!-- Dòng 3: Tiền thưởng -->
+            <tr id="rowMonthlyBudget" class="hover:bg-slate-50 transition">
+              <td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Tiền thưởng</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- PHẦN 3 & 4: TOP VIDEO NỔI BẬT & TOP NHÂN SỰ -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-      <!-- TOP 3 VIDEO NỔI BẬT (THEO ĐIỂM) -->
+      <!-- TOP 3 VIDEO -->
       <section class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
             <div>
               <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
                 <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
-                2. TOP 3 VIDEO NỔI BẬT (THEO ĐIỂM)
+                3. Top 3 Video Nổi Bật Nhất (Theo Tổng Điểm)
               </h2>
               <p class="text-xs text-slate-500 mt-0.5">Xếp hạng tính trên tổng hòa Lượt xem, Tim, Bình luận và Lượt lưu</p>
             </div>
@@ -208,13 +250,13 @@
         </div>
       </section>
 
-      <!-- TOP 3 NHÂN SỰ HĂNG HÁI (NHIỀU VIDEO NHẤT) -->
+      <!-- TOP 3 NHÂN SỰ -->
       <section class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
         <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
           <div>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
               <i data-lucide="flame" class="w-5 h-5 text-[#8c0000]"></i>
-              3. TOP 3 NHÂN SỰ HĂNG HÁI
+              4. Top Nhân Sự Hăng Hái
             </h2>
             <p class="text-xs text-slate-500 mt-0.5">Thành viên có sản lượng clip nhiều nhất</p>
           </div>
@@ -227,13 +269,13 @@
 
     </div>
 
-    <!-- PHẦN 5: VIDEO ĐẦU TƯ CHỈN CHU (THỜI LƯỢNG >= 90s) -->
+    <!-- PHẦN 5: VIDEO ĐẦU TƯ CHỈN CHU (>= 90s) -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
       <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
         <div>
           <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
             <i data-lucide="clapperboard" class="w-5 h-5 text-blue-700"></i>
-            4. Danh sách Video đầu tư chỉn chu (Thời lượng ≥ 90 giây)
+            5. Danh Sách Video Đầu Tư Chỉn Chu (Thời lượng ≥ 90 giây)
           </h2>
           <p class="text-xs text-slate-500 mt-0.5">Các clip chuyên đề sâu: Giới thiệu xe chi tiết, trải nghiệm lái, bàn giao xe</p>
         </div>
@@ -274,7 +316,7 @@
     let chartInstance = null;
 
     function formatMoney(amount) {
-      if (!amount || amount === 0 || isNaN(amount)) return "— đ";
+      if (!amount || amount === 0 || isNaN(amount)) return "0 đ";
       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     }
 
@@ -325,6 +367,7 @@
 
       renderKPICards(curr, prev, year, prevYear);
       renderYoYComparison(curr, prev, year, prevYear);
+      renderMonthlyTable(curr, year);
       renderTopVideos(curr);
       renderTopPersonnel(curr);
       renderLongVideos(curr);
@@ -451,6 +494,41 @@
       renderLineChart();
     }
 
+    // RENDER BẢNG 12 THÁNG CHẠY NGANG
+    function renderMonthlyTable(curr, year) {
+      document.getElementById("monthlyYearTitle").innerText = `(${year})`;
+      const monthly = curr?.monthly || Array.from({ length: 12 }, () => ({ videos: 0, members: 0, budget: 0 }));
+
+      const rowVid = document.getElementById("rowMonthlyVideos");
+      const rowMem = document.getElementById("rowMonthlyMembers");
+      const rowBud = document.getElementById("rowMonthlyBudget");
+
+      let totalVids = 0;
+      let totalBud = 0;
+
+      let htmlVid = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Số video</td>`;
+      let htmlMem = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Nhân sự tham gia</td>`;
+      let htmlBud = `<td class="py-2.5 px-3 text-left font-bold text-slate-800 bg-slate-50 border-r border-slate-200">Tiền thưởng</td>`;
+
+      monthly.forEach(m => {
+        totalVids += m.videos;
+        totalBud += m.budget;
+
+        htmlVid += `<td class="py-2.5 px-2 border-r border-slate-200 font-semibold ${m.videos > 0 ? 'text-blue-700 bg-blue-50/30' : 'text-slate-400'}">${m.videos}</td>`;
+        htmlMem += `<td class="py-2.5 px-2 border-r border-slate-200 font-semibold ${m.members > 0 ? 'text-emerald-700' : 'text-slate-400'}">${m.members}</td>`;
+        htmlBud += `<td class="py-2.5 px-2 border-r border-slate-200 text-xs font-semibold ${m.budget > 0 ? 'text-slate-800' : 'text-slate-400'}">${m.budget > 0 ? (m.budget / 1000).toLocaleString('vi-VN') + 'k' : '0'}</td>`;
+      });
+
+      // Thêm cột CẢ NĂM
+      htmlVid += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black">${totalVids}</td>`;
+      htmlMem += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black">${curr?.summary?.members || 0}</td>`;
+      htmlBud += `<td class="py-2.5 px-3 bg-red-50 text-[#8c0000] font-black text-xs">${formatMoney(totalBud)}</td>`;
+
+      rowVid.innerHTML = htmlVid;
+      rowMem.innerHTML = htmlMem;
+      rowBud.innerHTML = htmlBud;
+    }
+
     function renderLineChart() {
       const ctx = document.getElementById('yoyChart').getContext('2d');
       if (chartInstance) chartInstance.destroy();
@@ -504,10 +582,6 @@
                 boxWidth: 12, 
                 font: { family: 'Roboto', size: 11, weight: '500' } 
               } 
-            },
-            tooltip: {
-              titleFont: { family: 'Roboto', weight: 'bold' },
-              bodyFont: { family: 'Roboto' }
             }
           },
           scales: {
