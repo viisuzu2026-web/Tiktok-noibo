@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ITB - BÁO CÁO CHƯƠNG TRÌNH TIKTOK NỘI BỘ | ISUZU TÂY BẮC SÀI GÒN</title>
+  <title>ITB - Báo Cáo Chương Trình TikTok Nội Bộ | Isuzu Tây Bắc Sài Gòn</title>
   
-  <!-- Tailwind CSS & Font Montserrat -->
+  <!-- Tailwind CSS & Font Roboto -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
   
   <!-- Chart.js & Lucide Icons -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,7 +20,7 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Montserrat', 'sans-serif'],
+            sans: ['Roboto', 'sans-serif'],
           },
           colors: {
             isuzu: {
@@ -41,12 +41,12 @@
 
   <style>
     body {
-      background-color: #EEF2F6; /* Nền xám dịu làm nổi khối thẻ */
+      background-color: #EEF2F6;
       color: #0F172A;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Roboto', sans-serif;
     }
     .custom-scrollbar::-webkit-scrollbar {
-      height: 7px;
+      height: 6px;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background-color: #CBD5E1;
@@ -54,62 +54,63 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-red-800 selection:text-white">
+<body class="min-h-screen flex flex-col antialiased selection:bg-red-800 selection:text-white text-slate-800">
 
-  <!-- TOP HEADER ĐỎ ĐÔ #8c0000 & CHỮ TRẮNG -->
-  <header class="bg-[#8c0000] text-white shadow-lg sticky top-0 z-30 border-b border-red-950">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+  <!-- TOP HEADER ĐỎ ĐÔ #8c0000 & CHỮ TRẮNG GỌN GÀNG -->
+  <header class="bg-[#8c0000] text-white shadow-md sticky top-0 z-30 border-b border-red-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       
-      <!-- KHỐI LOGO & TIÊU ĐỀ LỚN NHẤT -->
-      <div class="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+      <!-- KHỐI LOGO & TIÊU ĐỀ GỌN -->
+      <div class="flex items-center gap-3.5">
         
         <!-- CỤM 2 LOGO (ISUZU & TBSG) -->
-        <div class="flex items-center gap-2.5 bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/20 shrink-0">
+        <div class="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-lg border border-white/20 shrink-0">
           <!-- Logo 1: ISUZU -->
           <img 
             id="logoIsuzu" 
-            src="https://isuzu-vietnam.com/wp-content/uploads/2020/01/Isuzu-logo-1991-3840x2160.png" 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Isuzu_logo.svg/2560px-Isuzu_logo.svg.png" 
             alt="Logo ISUZU" 
-            class="h-7 w-auto object-contain brightness-0 invert" 
+            class="h-6 w-auto object-contain brightness-0 invert" 
           />
-          <div class="h-6 w-[1px] bg-white/30"></div>
-          <!-- Logo 2: TBSG (Nếu có file logo tải lên cùng thư mục GitHub thì thay src="logo-tbsg.png") -->
+          <div class="h-5 w-[1px] bg-white/30"></div>
+          <!-- Logo 2: TBSG -->
           <img 
             id="logoTbsg" 
             src="https://taybacsaigon.com/wp-content/uploads/2023/05/logo-isuzu-tay-bac-sai-gon.png" 
             alt="Logo TBSG" 
-            class="h-8 w-auto object-contain brightness-0 invert"
+            class="h-6 w-auto object-contain brightness-0 invert"
             onerror="this.style.display='none'; document.getElementById('badgeTbsgFallback').style.display='inline-block';"
           />
-          <!-- Badge dự phòng nếu link ảnh TBSG chưa có -->
-          <span id="badgeTbsgFallback" style="display:none;" class="bg-white text-[#8c0000] text-[11px] font-black tracking-wider px-2 py-0.5 rounded">
+          <span id="badgeTbsgFallback" style="display:none;" class="bg-white text-[#8c0000] text-[10px] font-black tracking-wider px-1.5 py-0.5 rounded">
             TÂY BẮC SÀI GÒN
           </span>
         </div>
 
-        <!-- TIÊU ĐỀ TO NHẤT -->
+        <!-- TIÊU ĐỀ VỪA VẶN, KHÔNG BỊ XUỐNG DÒNG -->
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-xl sm:text-2xl md:text-[26px] font-black tracking-tight text-white leading-tight drop-shadow-sm">
-              <span class="text-yellow-400 font-extrabold">ITB</span> <span class="text-white/60 font-light">•</span> BÁO CÁO CHƯƠNG TRÌNH TIKTOK NỘI BỘ
+            <span class="text-xs font-black text-yellow-400 tracking-wider">ITB</span>
+            <span class="text-white/40">•</span>
+            <h1 class="text-base sm:text-lg md:text-xl font-black text-white tracking-normal uppercase">
+              BÁO CÁO CHƯƠNG TRÌNH TIKTOK NỘI BỘ
             </h1>
           </div>
-          <p class="text-xs sm:text-sm text-red-100 font-medium mt-0.5 tracking-wide">
-            Chiến dịch tiếp thị nội bộ: <span class="text-yellow-300 font-bold uppercase">“Cùng Tây Bắc bứt phá lên trend”</span>
+          <p class="text-xs text-red-100 font-normal mt-0.5">
+            Chiến dịch: <span class="text-yellow-300 font-semibold">“Cùng Tây Bắc bứt phá lên trend”</span>
           </p>
         </div>
       </div>
 
       <!-- BỘ LỌC CHỌN NĂM -->
-      <div class="flex items-center gap-2.5 bg-black/25 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 shrink-0 self-start md:self-auto">
-        <label for="yearSelector" class="text-xs sm:text-sm font-bold text-red-100 pl-2.5 flex items-center gap-1.5">
-          <i data-lucide="calendar" class="w-4 h-4 text-yellow-400"></i> CHỌN NĂM:
+      <div class="flex items-center gap-2 bg-black/20 p-1.5 rounded-xl border border-white/20 shrink-0 self-start md:self-auto">
+        <label for="yearSelector" class="text-xs font-bold text-red-100 pl-2 flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="calendar" class="w-3.5 h-3.5 text-yellow-400"></i> CHỌN NĂM:
         </label>
-        <select id="yearSelector" class="bg-white text-slate-900 font-extrabold text-sm sm:text-base rounded-xl px-4 py-2 border-0 focus:ring-2 focus:ring-yellow-400 focus:outline-none shadow-md cursor-pointer">
+        <select id="yearSelector" class="bg-white text-slate-900 font-bold text-xs sm:text-sm rounded-lg px-3 py-1.5 border-0 focus:ring-2 focus:ring-yellow-400 focus:outline-none shadow-sm cursor-pointer">
           <!-- Tự động nạp năm -->
         </select>
-        <button onclick="fetchSheetData()" title="Làm mới số liệu" class="p-2 bg-white/10 hover:bg-white text-white hover:text-[#8c0000] rounded-xl border border-white/20 shadow-sm transition">
-          <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+        <button onclick="fetchSheetData()" title="Làm mới số liệu" class="p-1.5 bg-white/10 hover:bg-white text-white hover:text-[#8c0000] rounded-lg border border-white/20 transition">
+          <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
         </button>
       </div>
 
@@ -117,57 +118,57 @@
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
     <!-- PHẦN 1: KPI CARDS TỔNG QUAN -->
     <section>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="kpiContainer">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="kpiContainer">
         <!-- Nạp động thẻ KPI -->
       </div>
     </section>
 
     <!-- PHẦN 2: PHÂN TÍCH TĂNG TRƯỞNG & BIỂU ĐỒ ĐƯỜNG (LINE CHART) -->
-    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-md p-6 sm:p-7">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2 mb-6">
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-slate-100 gap-2 mb-5">
         <div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
-            <i data-lucide="trending-up" class="w-6 h-6 text-[#8c0000]"></i>
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="trending-up" class="w-5 h-5 text-[#8c0000]"></i>
             1. Phân Tích & Đối Chiếu Số Liệu Tăng Trưởng (YoY)
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-1 font-medium">Bảng theo dõi hiệu suất đa năm & xu hướng vận động qua biểu đồ đường</p>
+          <p class="text-xs text-slate-500 mt-0.5">Hiệu suất hoạt động giữa 2 năm và xu hướng diễn biến theo dòng thời gian</p>
         </div>
-        <div id="compareBadge" class="text-xs sm:text-sm font-bold px-3.5 py-1.5 bg-red-50 text-[#8c0000] border border-red-100 rounded-full w-fit">
+        <div id="compareBadge" class="text-xs font-semibold px-3 py-1 bg-red-50 text-[#8c0000] border border-red-100 rounded-full w-fit">
           <!-- Badge đối chiếu -->
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <!-- Bảng số liệu chi tiết -->
         <div class="lg:col-span-7 overflow-x-auto">
-          <table class="w-full text-left text-sm sm:text-base">
+          <table class="w-full text-left text-xs sm:text-sm">
             <thead>
-              <tr class="bg-slate-50 text-slate-700 font-extrabold border-y border-slate-200 text-xs sm:text-sm uppercase tracking-wider">
-                <th class="py-3.5 px-4">Chỉ số hoạt động</th>
-                <th class="py-3.5 px-4 text-right text-[#8c0000]" id="thYearCurrent">Năm chọn</th>
-                <th class="py-3.5 px-4 text-right text-slate-500" id="thYearPrev">Năm trước</th>
-                <th class="py-3.5 px-4 text-center">Tăng / Giảm</th>
+              <tr class="bg-slate-50 text-slate-700 font-bold border-y border-slate-200 text-xs uppercase tracking-wider">
+                <th class="py-3 px-3.5">Chỉ số hoạt động</th>
+                <th class="py-3 px-3.5 text-right text-[#8c0000] whitespace-nowrap" id="thYearCurrent">Năm chọn</th>
+                <th class="py-3 px-3.5 text-right text-slate-500 whitespace-nowrap" id="thYearPrev">Năm trước</th>
+                <th class="py-3 px-3.5 text-center whitespace-nowrap">Tăng / Giảm</th>
               </tr>
             </thead>
-            <tbody id="compareTableBody" class="divide-y divide-slate-100 font-medium">
+            <tbody id="compareTableBody" class="divide-y divide-slate-100">
               <!-- Render động -->
             </tbody>
           </table>
         </div>
 
-        <!-- Biểu đồ xu hướng (Line Chart trực quan) -->
-        <div class="lg:col-span-5 bg-slate-50/90 p-5 rounded-2xl border border-slate-200">
+        <!-- Biểu đồ xu hướng (Line Chart) -->
+        <div class="lg:col-span-5 bg-slate-50/80 p-4 rounded-xl border border-slate-200">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700">
-              Xu hướng: Video & Nhân sự theo Năm
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">
+              Xu hướng: Video & Nhân sự
             </h3>
-            <span class="text-[11px] font-semibold text-slate-400">Đơn vị: Số lượng</span>
+            <span class="text-[11px] text-slate-400">Đơn vị: Số lượng</span>
           </div>
-          <div class="relative h-64">
+          <div class="relative h-56">
             <canvas id="yoyChart"></canvas>
           </div>
         </div>
@@ -175,31 +176,31 @@
     </section>
 
     <!-- PHẦN 3 & 4: TOP VIDEO NỔI BẬT & TOP NHÂN SỰ -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
       <!-- TOP 3 VIDEO NỔI BẬT (THEO ĐIỂM) -->
-      <section class="lg:col-span-8 bg-white rounded-3xl border border-slate-200/80 shadow-md p-6 sm:p-7 flex flex-col justify-between">
+      <section class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 flex flex-col justify-between">
         <div>
-          <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+          <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
             <div>
-              <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
-                <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
+              <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
                 2. Top 3 Video Nổi Bật Nhất (Theo Tổng Điểm)
               </h2>
-              <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Xếp hạng tính trên tổng hòa Lượt xem, Tim, Bình luận và Lượt lưu</p>
+              <p class="text-xs text-slate-500 mt-0.5">Xếp hạng tính trên tổng hòa Lượt xem, Tim, Bình luận và Lượt lưu</p>
             </div>
           </div>
 
           <div class="overflow-x-auto custom-scrollbar">
-            <table class="w-full text-left text-sm sm:text-base min-w-[620px]">
+            <table class="w-full text-left text-xs sm:text-sm min-w-[560px]">
               <thead>
-                <tr class="bg-slate-50 text-slate-700 font-extrabold border-y border-slate-200 text-xs uppercase tracking-wider">
-                  <th class="py-3 px-3 text-center w-12">Hạng</th>
-                  <th class="py-3 px-3">Nhân sự</th>
-                  <th class="py-3 px-3">Nội dung sản xuất</th>
-                  <th class="py-3 px-3 text-center">Tương tác</th>
-                  <th class="py-3 px-3 text-right">Tổng điểm</th>
-                  <th class="py-3 px-3 text-center">Video</th>
+                <tr class="bg-slate-50 text-slate-700 font-bold border-y border-slate-200 text-xs uppercase tracking-wider">
+                  <th class="py-2.5 px-3 text-center w-12">Hạng</th>
+                  <th class="py-2.5 px-3 whitespace-nowrap">Nhân sự</th>
+                  <th class="py-2.5 px-3">Nội dung video</th>
+                  <th class="py-2.5 px-3 text-center whitespace-nowrap">Tương tác</th>
+                  <th class="py-2.5 px-3 text-right whitespace-nowrap">Tổng điểm</th>
+                  <th class="py-2.5 px-3 text-center whitespace-nowrap">Xem</th>
                 </tr>
               </thead>
               <tbody id="topVideosBody" class="divide-y divide-slate-100">
@@ -211,18 +212,18 @@
       </section>
 
       <!-- TOP 3 NHÂN SỰ HĂNG HÁI (NHIỀU VIDEO NHẤT) -->
-      <section class="lg:col-span-4 bg-white rounded-3xl border border-slate-200/80 shadow-md p-6 sm:p-7">
-        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+      <section class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+        <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
           <div>
-            <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
-              <i data-lucide="flame" class="w-6 h-6 text-[#8c0000]"></i>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="flame" class="w-5 h-5 text-[#8c0000]"></i>
               3. Top Nhân Sự Hăng Hái
             </h2>
-            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Thành viên có sản lượng clip đóng góp lớn nhất</p>
+            <p class="text-xs text-slate-500 mt-0.5">Thành viên có sản lượng clip nhiều nhất</p>
           </div>
         </div>
 
-        <div id="topPersonnelList" class="space-y-3.5">
+        <div id="topPersonnelList" class="space-y-3">
           <!-- Render động -->
         </div>
       </section>
@@ -230,27 +231,27 @@
     </div>
 
     <!-- PHẦN 5: VIDEO ĐẦU TƯ CHỈN CHU (THỜI LƯỢNG >= 90s) -->
-    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-md p-6 sm:p-7">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
         <div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
-            <i data-lucide="clapperboard" class="w-6 h-6 text-blue-700"></i>
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="clapperboard" class="w-5 h-5 text-blue-700"></i>
             4. Danh Sách Video Đầu Tư Chỉn Chu (Thời lượng ≥ 90 giây)
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Các nội dung chuyên đề sâu: Giới thiệu xe chi tiết, trải nghiệm lái, bàn giao xe khách hàng</p>
+          <p class="text-xs text-slate-500 mt-0.5">Các clip chuyên đề sâu: Giới thiệu xe chi tiết, trải nghiệm lái, bàn giao xe</p>
         </div>
       </div>
 
       <div class="overflow-x-auto custom-scrollbar">
-        <table class="w-full text-left text-sm sm:text-base min-w-[720px]">
+        <table class="w-full text-left text-xs sm:text-sm min-w-[650px]">
           <thead>
-            <tr class="bg-slate-50 text-slate-700 font-extrabold border-y border-slate-200 text-xs uppercase tracking-wider">
-              <th class="py-3 px-3.5">Nhân sự</th>
-              <th class="py-3 px-3.5">Nội dung sản xuất</th>
-              <th class="py-3 px-3.5 text-center">Thời lượng</th>
-              <th class="py-3 px-3.5 text-right">Tổng điểm</th>
-              <th class="py-3 px-3.5 text-right">Tiền thưởng</th>
-              <th class="py-3 px-3.5 text-center">Xem clip</th>
+            <tr class="bg-slate-50 text-slate-700 font-bold border-y border-slate-200 text-xs uppercase tracking-wider">
+              <th class="py-2.5 px-3.5 whitespace-nowrap">Nhân sự</th>
+              <th class="py-2.5 px-3.5">Nội dung sản xuất</th>
+              <th class="py-2.5 px-3.5 text-center whitespace-nowrap">Thời lượng</th>
+              <th class="py-2.5 px-3.5 text-right whitespace-nowrap">Tổng điểm</th>
+              <th class="py-2.5 px-3.5 text-right whitespace-nowrap">Tiền thưởng</th>
+              <th class="py-2.5 px-3.5 text-center whitespace-nowrap">Clip</th>
             </tr>
           </thead>
           <tbody id="longVideosBody" class="divide-y divide-slate-100">
@@ -263,13 +264,13 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-white border-t border-slate-200 mt-auto py-6 text-center text-xs sm:text-sm text-slate-500 font-medium">
+  <footer class="bg-white border-t border-slate-200 mt-auto py-5 text-center text-xs text-slate-500">
     <p>© 2026 ISUZU TÂY BẮC SÀI GÒN — Hệ thống Báo cáo Tiếp thị Nội bộ TikTok</p>
   </footer>
 
   <!-- SCRIPT KẾT NỐI API APPS SCRIPT TRỰC TIẾP -->
   <script>
-    // Link API Web App Apps Script của bạn:
+    // Link API Web App Apps Script:
     const API_URL = "https://script.google.com/macros/s/AKfycbxWpT2PE3CvyDVNX_IlPTuE9fkoapbvAbvZ6sX3w1vvp9xQlmkfMGH1dlmtaBVZ6FkZ/exec";
 
     let DATABASE = {};
@@ -289,7 +290,7 @@
     // Tự động kéo dữ liệu JSON từ Apps Script
     async function fetchSheetData() {
       const kpiBox = document.getElementById("kpiContainer");
-      kpiBox.innerHTML = `<div class="col-span-4 p-8 text-center text-slate-600 font-extrabold animate-pulse bg-white rounded-3xl border border-slate-200">⏳ Đang kết nối API và đồng bộ số liệu từ Google Sheets...</div>`;
+      kpiBox.innerHTML = `<div class="col-span-4 p-8 text-center text-slate-600 font-bold animate-pulse bg-white rounded-2xl border border-slate-200">⏳ Đang kết nối API và đồng bộ số liệu từ Google Sheets...</div>`;
 
       try {
         const response = await fetch(API_URL);
@@ -299,7 +300,7 @@
         renderDashboard(currentSelectedYear);
       } catch (error) {
         console.error("Lỗi:", error);
-        kpiBox.innerHTML = `<div class="col-span-4 p-8 text-center text-rose-600 font-extrabold bg-white rounded-3xl border border-slate-200">❌ Không thể tải dữ liệu từ Apps Script API. Vui lòng kiểm tra quyền truy cập Anyone của Web App!</div>`;
+        kpiBox.innerHTML = `<div class="col-span-4 p-8 text-center text-rose-600 font-bold bg-white rounded-2xl border border-slate-200">❌ Không thể tải dữ liệu từ Apps Script API. Vui lòng kiểm tra quyền truy cập Anyone của Web App!</div>`;
       }
     }
 
@@ -351,7 +352,7 @@
       const container = document.getElementById("kpiContainer");
 
       if (!curr || !curr.hasData) {
-        container.innerHTML = `<div class="col-span-4 p-8 text-center text-slate-400 font-bold bg-white rounded-3xl border border-slate-200">Không có dữ liệu cho năm ${currYear}</div>`;
+        container.innerHTML = `<div class="col-span-4 p-8 text-center text-slate-400 font-bold bg-white rounded-2xl border border-slate-200">Không có dữ liệu cho năm ${currYear}</div>`;
         return;
       }
 
@@ -396,29 +397,29 @@
       ];
 
       container.innerHTML = kpis.map(item => {
-        let diffBadge = `<span class="text-xs text-slate-400 font-medium">Không đủ số liệu</span>`;
+        let diffBadge = `<span class="text-[11px] text-slate-400 font-normal">Không đủ số liệu</span>`;
         if (item.diff !== null) {
           const isUp = item.diff >= 0;
           diffBadge = `
-            <span class="inline-flex items-center gap-0.5 text-xs sm:text-sm font-extrabold ${isUp ? 'text-emerald-600' : 'text-rose-600'}">
-              <i data-lucide="${isUp ? 'arrow-up-right' : 'arrow-down-right'}" class="w-4 h-4"></i>
+            <span class="inline-flex items-center gap-0.5 text-xs font-bold ${isUp ? 'text-emerald-600' : 'text-rose-600'}">
+              <i data-lucide="${isUp ? 'arrow-up-right' : 'arrow-down-right'}" class="w-3.5 h-3.5"></i>
               ${Math.abs(item.diff).toFixed(1)}%
             </span>
-            <span class="text-xs text-slate-400 font-medium">vs ${prevYear}</span>
+            <span class="text-[11px] text-slate-400">vs ${prevYear}</span>
           `;
         }
 
         return `
-          <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-md flex flex-col justify-between hover:shadow-lg transition">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
             <div class="flex items-center justify-between">
-              <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-500">${item.label}</span>
-              <div class="p-2.5 rounded-2xl ${item.bg} ${item.color}">
-                <i data-lucide="${item.icon}" class="w-6 h-6"></i>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">${item.label}</span>
+              <div class="p-2 rounded-xl ${item.bg} ${item.color}">
+                <i data-lucide="${item.icon}" class="w-5 h-5"></i>
               </div>
             </div>
-            <div class="mt-4">
-              <div class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">${item.val}</div>
-              <div class="mt-1.5 flex items-center gap-1.5">${diffBadge}</div>
+            <div class="mt-3">
+              <div class="text-2xl font-black text-slate-900 tracking-tight">${item.val}</div>
+              <div class="mt-1 flex items-center gap-1.5">${diffBadge}</div>
             </div>
           </div>
         `;
@@ -439,12 +440,12 @@
       ];
 
       tbody.innerHTML = rows.map(r => {
-        let diffHtml = `<span class="text-xs sm:text-sm text-slate-400 font-medium">Không đủ số liệu</span>`;
+        let diffHtml = `<span class="text-xs text-slate-400">Không đủ số liệu</span>`;
         if (r.c !== undefined && r.p !== undefined && r.p > 0 && curr?.hasData && prev?.hasData) {
           const diff = ((r.c - r.p) / r.p) * 100;
           const isUp = diff >= 0;
           diffHtml = `
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs sm:text-sm font-extrabold ${isUp ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${isUp ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">
               ${isUp ? '+' : ''}${diff.toFixed(1)}%
             </span>
           `;
@@ -455,26 +456,23 @@
 
         return `
           <tr class="hover:bg-slate-50 transition-colors">
-            <td class="py-3.5 px-4 font-bold text-slate-800">${r.label}</td>
-            <td class="py-3.5 px-4 text-right font-black text-[#8c0000] text-sm sm:text-base">${currText}</td>
-            <td class="py-3.5 px-4 text-right text-slate-500 font-semibold text-sm sm:text-base">${prevText}</td>
-            <td class="py-3.5 px-4 text-center">${diffHtml}</td>
+            <td class="py-3 px-3.5 font-medium text-slate-800">${r.label}</td>
+            <td class="py-3 px-3.5 text-right font-bold text-[#8c0000] whitespace-nowrap">${currText}</td>
+            <td class="py-3 px-3.5 text-right text-slate-500 font-medium whitespace-nowrap">${prevText}</td>
+            <td class="py-3 px-3.5 text-center whitespace-nowrap">${diffHtml}</td>
           </tr>
         `;
       }).join('');
 
-      // Vẽ biểu đồ đường qua các năm
       renderLineChart();
     }
 
-    // BIỂU ĐỒ ĐƯỜNG (LINE CHART) THEO CÁC NĂM
+    // BIỂU ĐỒ ĐƯỜNG (LINE CHART) GỌN ĐẸP
     function renderLineChart() {
       const ctx = document.getElementById('yoyChart').getContext('2d');
       if (chartInstance) chartInstance.destroy();
 
-      // Lấy danh sách các năm theo thứ tự tăng dần thời gian (vd: 2024, 2025, 2026, 2027)
       const sortedYears = Object.keys(DATABASE).map(y => parseInt(y, 10)).sort((a, b) => a - b);
-      
       const videoSeries = sortedYears.map(y => (DATABASE[y] && DATABASE[y].hasData) ? DATABASE[y].summary.videos : 0);
       const memberSeries = sortedYears.map(y => (DATABASE[y] && DATABASE[y].hasData) ? DATABASE[y].summary.members : 0);
 
@@ -487,14 +485,14 @@
               label: 'Tổng Video',
               data: videoSeries,
               borderColor: '#8c0000',
-              backgroundColor: 'rgba(140, 0, 0, 0.1)',
-              borderWidth: 3,
+              backgroundColor: 'rgba(140, 0, 0, 0.08)',
+              borderWidth: 2.5,
               pointBackgroundColor: '#8c0000',
               pointBorderColor: '#FFFFFF',
               pointBorderWidth: 2,
-              pointRadius: 5,
-              pointHoverRadius: 7,
-              tension: 0.35, // Bo cong mượt mà
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              tension: 0.3,
               fill: true,
             },
             {
@@ -502,14 +500,14 @@
               data: memberSeries,
               borderColor: '#0A2540',
               backgroundColor: 'transparent',
-              borderWidth: 2.5,
-              borderDash: [5, 5], // Nét đứt để phân biệt rõ ràng
+              borderWidth: 2,
+              borderDash: [4, 4],
               pointBackgroundColor: '#0A2540',
               pointBorderColor: '#FFFFFF',
               pointBorderWidth: 2,
-              pointRadius: 5,
-              pointHoverRadius: 7,
-              tension: 0.35,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              tension: 0.3,
             }
           ]
         },
@@ -520,29 +518,24 @@
             legend: { 
               position: 'bottom', 
               labels: { 
-                boxWidth: 14, 
-                font: { family: 'Montserrat', size: 12, weight: '700' } 
+                boxWidth: 12, 
+                font: { family: 'Roboto', size: 11, weight: '500' } 
               } 
             },
             tooltip: {
-              titleFont: { family: 'Montserrat', weight: 'bold' },
-              bodyFont: { family: 'Montserrat' }
+              titleFont: { family: 'Roboto', weight: 'bold' },
+              bodyFont: { family: 'Roboto' }
             }
           },
           scales: {
             y: { 
               beginAtZero: true, 
-              grid: { color: '#E2E8F0' },
-              ticks: { font: { family: 'Montserrat', weight: '600' } },
-              title: {
-                display: true,
-                text: 'Đơn vị (Số lượng)',
-                font: { family: 'Montserrat', size: 11, weight: '600' }
-              }
+              grid: { color: '#F1F5F9' },
+              ticks: { font: { family: 'Roboto', size: 11 } }
             },
             x: { 
               grid: { display: false },
-              ticks: { font: { family: 'Montserrat', weight: '700' } }
+              ticks: { font: { family: 'Roboto', size: 11, weight: '500' } }
             }
           }
         }
@@ -554,25 +547,25 @@
       const list = (curr && curr.hasData) ? curr.topVideos : [];
 
       if (!list || list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-sm font-semibold">Không có dữ liệu video cho năm này</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Không có dữ liệu video cho năm này</td></tr>`;
         return;
       }
 
       const medals = ["🥇", "🥈", "🥉"];
       tbody.innerHTML = list.map((item, idx) => `
         <tr class="hover:bg-slate-50 transition-colors">
-          <td class="py-3.5 px-3 text-center text-xl">${medals[idx] || (idx + 1)}</td>
-          <td class="py-3.5 px-3 font-extrabold text-slate-800 text-xs sm:text-sm uppercase">${item.author}</td>
-          <td class="py-3.5 px-3 text-slate-600 text-xs sm:text-sm font-medium max-w-[240px] truncate" title="${item.title}">${item.title}</td>
-          <td class="py-3.5 px-3 text-center text-xs sm:text-sm text-slate-600">
-            <span class="inline-flex items-center gap-1 font-bold text-slate-800">${formatNumber(item.views)} <i data-lucide="eye" class="w-3.5 h-3.5 text-slate-400"></i></span>
-            <span class="text-slate-300">|</span>
-            <span class="inline-flex items-center gap-1 font-bold text-rose-600">${formatNumber(item.likes)} <i data-lucide="heart" class="w-3.5 h-3.5"></i></span>
+          <td class="py-2.5 px-3 text-center text-lg">${medals[idx] || (idx + 1)}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-800 uppercase whitespace-nowrap text-xs">${item.author}</td>
+          <td class="py-2.5 px-3 text-slate-600 max-w-[220px] truncate" title="${item.title}">${item.title}</td>
+          <td class="py-2.5 px-3 text-center text-xs text-slate-600 whitespace-nowrap">
+            <span class="font-semibold text-slate-800">${formatNumber(item.views)}</span> <i data-lucide="eye" class="w-3 h-3 inline text-slate-400"></i>
+            <span class="text-slate-300 mx-1">|</span>
+            <span class="font-semibold text-rose-600">${formatNumber(item.likes)}</span> <i data-lucide="heart" class="w-3 h-3 inline text-rose-400"></i>
           </td>
-          <td class="py-3.5 px-3 text-right font-black text-[#8c0000] text-sm sm:text-base">${parseFloat(item.score).toFixed(2)}</td>
-          <td class="py-3.5 px-3 text-center">
-            <a href="${item.link}" target="_blank" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-800 hover:underline">
-              Xem clip <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <td class="py-2.5 px-3 text-right font-black text-[#8c0000] whitespace-nowrap">${parseFloat(item.score).toFixed(2)}</td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <a href="${item.link}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline">
+              Xem clip <i data-lucide="external-link" class="w-3 h-3"></i>
             </a>
           </td>
         </tr>
@@ -584,7 +577,7 @@
       const list = (curr && curr.hasData) ? curr.topPersonnel : [];
 
       if (!list || list.length === 0) {
-        container.innerHTML = `<p class="text-center text-slate-400 text-sm font-semibold py-6">Chưa có thông tin nhân sự</p>`;
+        container.innerHTML = `<p class="text-center text-slate-400 text-xs py-6">Chưa có thông tin nhân sự</p>`;
         return;
       }
 
@@ -595,15 +588,15 @@
       ];
 
       container.innerHTML = list.map((p, idx) => `
-        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-red-300 transition">
-          <div class="flex items-center gap-3">
-            <span class="w-7 h-7 flex items-center justify-center rounded-full text-xs font-black border ${badgeColors[idx] || 'bg-white text-slate-600'} shadow-sm">
+        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-red-200 transition">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold border ${badgeColors[idx] || 'bg-white text-slate-600'} shadow-sm">
               ${idx + 1}
             </span>
-            <span class="text-xs sm:text-sm font-bold text-slate-900 uppercase">${p.name}</span>
+            <span class="text-xs font-bold text-slate-800 uppercase whitespace-nowrap">${p.name}</span>
           </div>
-          <div class="flex items-center gap-1.5 font-black text-[#8c0000] text-sm sm:text-base">
-            ${p.count} <span class="text-xs font-semibold text-slate-500">video</span>
+          <div class="flex items-center gap-1 font-bold text-[#8c0000] text-xs sm:text-sm whitespace-nowrap">
+            ${p.count} <span class="text-xs font-normal text-slate-400">video</span>
           </div>
         </div>
       `).join('');
@@ -614,24 +607,24 @@
       const list = (curr && curr.hasData) ? curr.investedVideos : [];
 
       if (!list || list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-sm font-semibold">Không có video nào từ 90 giây trở lên</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Không có video nào từ 90 giây trở lên</td></tr>`;
         return;
       }
 
       tbody.innerHTML = list.map(item => `
         <tr class="hover:bg-slate-50 transition-colors">
-          <td class="py-3.5 px-3.5 font-extrabold text-slate-800 text-xs sm:text-sm uppercase">${item.author}</td>
-          <td class="py-3.5 px-3.5 text-slate-600 text-xs sm:text-sm font-medium max-w-[280px]">${item.title}</td>
-          <td class="py-3.5 px-3.5 text-center">
-            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs sm:text-sm font-black">
-              <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${item.duration}s
+          <td class="py-2.5 px-3.5 font-bold text-slate-800 uppercase whitespace-nowrap text-xs">${item.author}</td>
+          <td class="py-2.5 px-3.5 text-slate-600 max-w-[280px] truncate" title="${item.title}">${item.title}</td>
+          <td class="py-2.5 px-3.5 text-center whitespace-nowrap">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 text-xs font-bold">
+              <i data-lucide="clock" class="w-3 h-3"></i> ${item.duration}s
             </span>
           </td>
-          <td class="py-3.5 px-3.5 text-right font-extrabold text-slate-700 text-xs sm:text-sm">${parseFloat(item.score).toFixed(2)}</td>
-          <td class="py-3.5 px-3.5 text-right font-black text-emerald-600 text-xs sm:text-sm">${formatMoney(item.reward)}</td>
-          <td class="py-3.5 px-3.5 text-center">
-            <a href="${item.link}" target="_blank" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-800 hover:underline">
-              TikTok <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          <td class="py-2.5 px-3.5 text-right font-bold text-slate-700 whitespace-nowrap">${parseFloat(item.score).toFixed(2)}</td>
+          <td class="py-2.5 px-3.5 text-right font-black text-emerald-600 whitespace-nowrap">${formatMoney(item.reward)}</td>
+          <td class="py-2.5 px-3.5 text-center whitespace-nowrap">
+            <a href="${item.link}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline">
+              TikTok <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
             </a>
           </td>
         </tr>
